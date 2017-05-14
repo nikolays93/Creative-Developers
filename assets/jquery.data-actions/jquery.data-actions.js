@@ -4,15 +4,15 @@
  * Author: NikolayS93
  * Author URI: //vk.com/nikolays_93
  * Description: jQuery actions.
- * Version: 1.6b
+ * Version: 1.7b
  * License: GNU General Public License v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 jQuery(function($){
-	//
-	// Core функции data-действий
-	//
+  //
+  // Core функции data-действий
+  //
   function doAction($obj, target, action){
     if( target === 'this' ){
       var evalTarget = '$(this)';
@@ -35,7 +35,8 @@ jQuery(function($){
       }); 
     }
 
-    eval( evalTarget + '.' + action + '(' + $obj.data('props') + ');' );
+    var props = ($obj.data('props')) ? $obj.data('props') : '';
+    eval( evalTarget + '.' + action + '(' + props + ');' );
   }
 
   function setAction($obj, target, trigger, action ){
@@ -73,36 +74,16 @@ jQuery(function($){
   //
   // Простые действия (target пишется в аттрибут действия)[data-fade-In="#target"]
   // если data-toggle !== 'false' повторный клик совершит обратное действие
-  // на checkbox'ах и input'ах действует коровья суперсила ;D
   // 
-  var easyActions = ['hide', 'show', 'fade-out', 'fade-in', 'slide-up', 'slide-down', 'toggle', 'fade-toggle', 'slide-toggle'];
+  var easyActions = ['hide', 'show', 'fade-out', 'fade-in', 'slide-up', 'slide-down', 'fade-toggle', 'slide-toggle'];
   easyActions.forEach(function(item, i, arr) {
     $('[data-' + item + ']').each(function(index, el) {
-
       var spAct = item.split('-');
-      action = spAct[0] + spAct[1].charAt(0).toUpperCase() + spAct[1].substr(1).toLowerCase();
-      if( $(this).attr('type') == 'checkbox' || $(this).attr('type') == 'radio' ){
-        
-        if($(this).data('toggle') !== 'false')
-          action = (spAct[0] == 'hide' || spAct[0] == 'show') ? 'toggle' : spAct[0] + 'Toggle';
-
-        var cAction = item.replace('-', '');
-        if( !$(this).is(':checked')){
-          if( ['show', 'fadeIn', 'slideDown'].includes(cAction) ){
-            cAction = cAction.replace('show', 'hide').replace('In', 'Out').replace('Down', 'Up');
-          }
-          else{
-            cAction = cAction.replace('hide', 'show').replace('Out', 'In').replace('Up', 'Down');
-          }
-        }
-
-        doAction( $(this), $(this).data(item), cAction );
-        var trigger = $(this).data('trigger');
-        if( ! trigger ) trigger = 'change';
-      } else {
-        var trigger = $(this).data('trigger');
-        if( ! trigger ) trigger = 'click';
-      }
+      action = (item.indexOf('-') > -1) ? spAct[0] + spAct[1].charAt(0).toUpperCase() + spAct[1].substr(1).toLowerCase() : item;
+      
+      var trigger = $(this).data('trigger');
+      if( ! trigger )
+        trigger = ( $(this).attr('type') == 'checkbox' || $(this).attr('type') == 'radio' ) ? 'change' : 'click';
 
       setAction( $(this), $(this).data(item), trigger, action );
     });
