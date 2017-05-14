@@ -1,5 +1,11 @@
 <?php
-if ( ! defined( 'ABSPATH' ) )    exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) )
+	exit; // Exit if accessed directly
+
+// Add theme WooCommerce support
+add_action( 'after_setup_theme', function(){
+	add_theme_support( 'woocommerce' );
+} );
 
 /**
  * Set Filters
@@ -13,15 +19,14 @@ remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 3
 
 add_filter('woocommerce_placeholder_img_src', 'placeholder_img_src');
 function placeholder_img_src( $src ) {
+	if( ! is_readable( get_template_directory() . '/img/placeholder.png' ) )
+		return $src;
+
 	return get_template_directory_uri() . '/img/placeholder.png';
 }
 
-// Добавляем поддержку WooCommerce
-add_action( 'after_setup_theme', function(){
-	add_theme_support( 'woocommerce' );
-} );
-
 // Меняем символ рубля (так как он работает не корректно на некоторых системах)
+add_filter('woocommerce_currency_symbol', 'change_currency_symbol', 10, 2);
 function change_currency_symbol( $currency_symbol, $currency ) {
 	if( $currency == 'RUB' && !is_admin() ){
 		if( defined('DT_PLUGIN_NAME') && $opt = get_option( DT_PLUGIN_NAME ) ){
@@ -31,10 +36,10 @@ function change_currency_symbol( $currency_symbol, $currency ) {
 		$currency_symbol = 'Р.';
 	}
 	return $currency_symbol;
-	}
-add_filter('woocommerce_currency_symbol', 'change_currency_symbol', 10, 2);
+}
 
-// Вносим изменения в табы
+// Если нужно изменить табы
+// add_filter( 'woocommerce_product_tabs', 'woo_change_tabs', 98 );
 function woo_change_tabs( $tabs ) {
 	global $post;
 
@@ -52,17 +57,16 @@ function woo_change_tabs( $tabs ) {
 		unset( $tabs['additional_information'] );
 
 	return $tabs;
-	}
-add_filter( 'woocommerce_product_tabs', 'woo_change_tabs', 98 );
+}
 
 // Отключить WooCommerce стили
+// add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
 function dp_dequeue_styles( $enqueue_styles ) {
-	unset( $enqueue_styles['woocommerce-general'] );	// Отключение общих стилей
-	unset( $enqueue_styles['woocommerce-layout'] );		// Отключение стилей шаблонов
-	unset( $enqueue_styles['woocommerce-smallscreen'] );	// Отключение оптимизации для маленьких экранов
+	unset( $enqueue_styles['woocommerce-general'] );	 // Отключение общих стилей
+	unset( $enqueue_styles['woocommerce-layout'] );		 // Отключение стилей шаблонов
+	unset( $enqueue_styles['woocommerce-smallscreen'] ); // Отключение оптимизации для маленьких экранов
 	return $enqueue_styles;
-	}
-add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
+}
 
 // Регистрируем боковую зону для витрин магазина
 function init_woocommerce_sidebar(){
@@ -78,9 +82,8 @@ function init_woocommerce_sidebar(){
 	}
 add_action( 'widgets_init', 'init_woocommerce_sidebar' );
 
-function sort_checkout_fields(){
-
-}
+// Меняем расположение checkout inputs
+add_filter( 'woocommerce_checkout_fields' , 'custom_wc_checkout_fields' );
 function custom_wc_checkout_fields( $fields ) {
 	// $fields['billing']['billing_email']['priority'] = 5;
 	// $fields['billing']['billing_phone']['priority'] = 7;
@@ -144,10 +147,11 @@ function custom_wc_checkout_fields( $fields ) {
 	}
 
 	return $filtred_fields;
-	}
-add_filter( 'woocommerce_checkout_fields' , 'custom_wc_checkout_fields' );
+}
 
 // Используем формат цены вариативного товара WC 2.0
+add_filter( 'woocommerce_variable_sale_price_html', 'wc_wc20_variation_price_format', 10, 2 );
+add_filter( 'woocommerce_variable_price_html', 'wc_wc20_variation_price_format', 10, 2 );
 function wc_wc20_variation_price_format( $price, $product ) {
     $prices = array(
     	$product->get_variation_price( 'min', true ),
@@ -171,14 +175,12 @@ function wc_wc20_variation_price_format( $price, $product ) {
     }
 
     return $price;
-	}
-add_filter( 'woocommerce_variable_sale_price_html', 'wc_wc20_variation_price_format', 10, 2 );
-add_filter( 'woocommerce_variable_price_html', 'wc_wc20_variation_price_format', 10, 2 );
+}
 
 /**
  * Вернет объект таксономии если на странице есть категории товара
  * @param  string $taxonomy название таксаномии (Не уверен что логично изменять)
- * @return array | false 			ids дочерних категорий | не удалось получить
+ * @return array | false 	ids дочерних категорий | не удалось получить
  */
 function get_children_product_cat_ids($taxonomy = 'product_cat'){
 	if( is_shop() && !is_search() ){
@@ -212,6 +214,7 @@ function has_product_cat(){
  * Add Customize
  */
 // Определяем сетку вывода товара
+add_filter( 'loop_shop_columns', 'wp_woo_shop_columns' );
 function wp_woo_shop_columns( $columns, $is_tax=false ) {
 	if( $is_tax && has_product_cat() ){
 		$columns = (int)get_theme_mod( 'woo_product_cat_columns', 4 );
@@ -220,28 +223,25 @@ function wp_woo_shop_columns( $columns, $is_tax=false ) {
 
 	$columns = (int)get_theme_mod( 'woo_product_columns', 4 );
 	return ( $columns < 1) ? 4 : $columns;
-	}
-add_filter( 'loop_shop_columns', 'wp_woo_shop_columns' );
+}
 
 // Количество товаров на странице
+add_filter( 'loop_shop_per_page', 'customize_per_page', 20 );
 function customize_per_page($cols){
 	if(wp_is_mobile())
 		return get_theme_mod( 'woo_item_count_mobile', 8 );
 
 	return get_theme_mod( 'woo_item_count', 16 );
-	}
-add_filter( 'loop_shop_per_page', 'customize_per_page', 20 );
+}
 
 // Не показывать количество товаров в категории
-function woo_remove_category_products_count( $count_html ) {
-	if( get_theme_mod( 'woo_show_tax_count', false ) )
-		return $count_html;
-	
-    return false;
-	}
 add_filter( 'woocommerce_subcategory_count_html', 'woo_remove_category_products_count' );
+function woo_remove_category_products_count( $count_html ) {
+	return ( get_theme_mod( 'woo_show_tax_count', false ) ) ? $count_html : false;
+}
 
 // Заменить "Товары" на..
+add_action( 'init', 'change_product_labels' );
 function change_product_labels() {
 	global $wp_post_types;
 
@@ -250,9 +250,9 @@ function change_product_labels() {
 	$wp_post_types['product']->labels->all_items = $label;
 	$wp_post_types['product']->labels->archives  = $label;
 	$wp_post_types['product']->labels->menu_name = $label;
-	}
-add_action( 'init', 'change_product_labels' );
+}
 
+add_action( 'admin_menu', 'change_wc_menu_labels' );
 function change_wc_menu_labels() {
     global $menu;
 
@@ -263,9 +263,9 @@ function change_wc_menu_labels() {
     	if($value[0] == 'Товары')
     		$menu[$key][0] = get_theme_mod( 'woo_product_label', 'Каталог' );
     }
-	}
-add_action( 'admin_menu', 'change_wc_menu_labels' );
+}
 
+add_action( 'customize_register', 'print_wc_settings' );
 function print_wc_settings( $wp_customize ){
 	$section = 'display_wc_options';
 	$wp_customize->add_section(
@@ -342,5 +342,4 @@ function print_wc_settings( $wp_customize ){
     		'type'        => 'checkbox',
     		)
     	);
-	}
-add_action( 'customize_register', 'print_wc_settings' );
+}

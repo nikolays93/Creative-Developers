@@ -9,7 +9,7 @@
 </head>
 <body <?php body_class(); ?>>
 	<div id="page" class="site">
-		<div class="container">
+		<div class="container site-header">
 			<div class="row head-info">
 				<div class="col-4 logotype"><?php the_custom_logo(); ?></div>
 				<div class="col-4">

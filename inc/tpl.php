@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) )
   exit; // Exit if accessed directly
 
 function get_tpl_content( $affix, $return = false ){
-  $singular = is_singular();
+  $singular = is_singular() ? '-single' : '';
 
   if($return)
     ob_start();
@@ -20,7 +20,7 @@ function get_tpl_content( $affix, $return = false ){
       $affix = get_post_type();
 
     if( $affix != 'product' )
-      get_template_part( 'template-parts/content', $affix );
+      get_template_part( 'template-parts/content' . $singular, $affix );
   }
 
   if (!$singular)

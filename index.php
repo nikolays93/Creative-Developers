@@ -1,7 +1,6 @@
 <?php
 	get_header();
 
-	$primary_class = "col-12";
 	$type = $affix = get_post_type();
 
 	if($type == 'post')
@@ -9,16 +8,12 @@
 ?>
 
 <div class="container">
-	<?php if ( !is_front_page() ) breadcrumbs_from_yoast(); ?>
+	<?php
+		if ( !is_front_page() )
+			breadcrumbs_from_yoast();
+	?>
 	<div class="row">
-		<?php
-		if ( $type == 'post' && is_active_sidebar( 'archive' ) ){
-			$primary_class = "col-9";
-			
-			get_sidebar();
-		}
-		?>
-		<div id="primary" class="<?php echo $primary_class; ?>">
+		<div id="primary" class="<?php echo ( $type == 'post' && is_active_sidebar( 'archive' ) ) ? "col-9" : "col-12"; ?>">
 			<main id="main" class="main content" role="main">
 			<?php
 				if ( have_posts() ){
@@ -31,13 +26,11 @@
 						get_tpl_search_content();
 					}
 					else {
-						if( ! is_front_page() ){
+						if( ! is_front_page() && ! is_single() ){
 							the_advanced_archive_title();
 							the_archive_description( '<div class="taxonomy-description">', '</div>' );
 						}
-
 						get_tpl_content( $affix );
-
 					}
 
 					the_template_pagination();
@@ -48,7 +41,9 @@
 				}
 			?>	
 			</main><!-- #main -->
-		</div><!-- #primary -->
+
+		<?php get_sidebar(); ?>
+		</div><!-- .col -->
 	</div><!-- .row -->
 </div><!-- .container -->
 <?php
