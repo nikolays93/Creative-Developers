@@ -1,6 +1,6 @@
 [submodule "jquery.data-actions"]
-	path = jquery.data-actions
+	path = assets/jquery.data-actions
 	url = https://github.com/nikolays93/jquery.data-actions.git
 [submodule "easy-bootstrap"]
-	path = easy-bootstrap
+	path = assets/easy-bootstrap
 	url = https://github.com/nikolays93/easy-bootstrap.git
