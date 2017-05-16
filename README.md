@@ -1,27 +1,17 @@
-# Developer's starter theme #
+## Creative Developer's starter theme ##
 
-## Release notes ##
-3.3
-- todo: write notes
+```
+/*!
+ * Theme Name: Creative Developers Theme
+ * Author: NikolayS93
+ * Author URI: //vk.com/nikolays_93
+ * Description: Starter page for creative developers.
+ * Version: 1.0
+ * License: GNU General Public License v2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: cdevelops-theme
+ * Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
+ */
+```
 
-3.2
-- Navigation fixes
-- exclude bootstrap
-- load min style fix
-- add module easy-bootstrap
-- split jquery.data-actions module from script.js
-- 
-3.1
-- add woocommerce templates and change common.js
-- fix data-options.js 
-- fix the advanced titles
-- add style enq. and rename script.js
-- change title templates
-
-3.0
-- general rewrite woocommerce template
-- fix number inputs (inc. qty)
-- explode tpl files
-- fix styles
-- add bootstrap (4 alpha 6)
-- add bootstrap in customizer
+### Release notes ###
