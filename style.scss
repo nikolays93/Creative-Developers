@@ -18,7 +18,8 @@ Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
 // * Woocommerce
 // * Content
 
-@import "easy-bs/easy-bootstrap.scss";
+// default scss dir 'assets/scss' @see wp-compiler plug-in
+@import "../easy-bs/easy-bootstrap.scss";
 
 //
 // Header
