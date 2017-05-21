@@ -29,8 +29,8 @@ get_header( 'shop' ); ?>
 			 * woocommerce_before_shop_loop hook.
 			 *
 			 * @hooked wc_print_notices - 10
-			 * @hooked woocommerce_result_count - 20
-			 * @hooked woocommerce_catalog_ordering - 30
+			 * @unhooked woocommerce_result_count - 20 (in /inc/functions-woocommerce.php)
+			 * @unhooked woocommerce_catalog_ordering - 30 (in /inc/functions-woocommerce.php)
 			 */
 			do_action( 'woocommerce_before_shop_loop' );
 		?>
@@ -80,15 +80,6 @@ get_header( 'shop' ); ?>
 		 * @hooked woocommerce_product_archive_description - 10
 		 */
 		do_action( 'woocommerce_archive_description' );
-	?>
-
-	<?php // sidebar
-		/**
-		 * woocommerce_sidebar hook.
-		 *
-		 * @hooked woocommerce_get_sidebar - 10
-		 */
-		do_action( 'woocommerce_sidebar' );
 	?>
 
 	<?php // /wrapper
