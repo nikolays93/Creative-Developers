@@ -26,10 +26,6 @@
 						get_tpl_search_content();
 					}
 					else {
-						if( ! is_front_page() && ! is_single() ){
-							the_advanced_archive_title();
-							the_archive_description( '<div class="taxonomy-description">', '</div>' );
-						}
 						get_tpl_content( $affix );
 					}
 

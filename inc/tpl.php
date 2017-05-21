@@ -9,6 +9,11 @@ function get_tpl_content( $affix, $return = false ){
   if($return)
     ob_start();
 
+  if( ! is_front_page() && is_archive() && !is_search() ){
+    the_advanced_archive_title();
+    the_archive_description( '<div class="taxonomy-description">', '</div>' );
+  }
+
   if (!$singular)
     echo "<div class='row'>";
 
