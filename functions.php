@@ -75,17 +75,15 @@ function _theme_styles_and_scripts() {
   }
 
   // wp_deregister_script( 'jquery' );
-    // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
+  // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
   wp_enqueue_script('jquery');
-  
-  wp_enqueue_script('data-actions', $tpl_uri . '/assets/data-actions/jquery.data-actions'.$suffix.'.js', array('jquery'), '1.0', true);
   wp_enqueue_script('script', $tpl_uri . '/assets/script.js', array('jquery'), '1.0', true);
 }
 add_action( 'wp_enqueue_scripts', '_theme_styles_and_scripts', 999 );
 
-//
-// template filters:
-//
+/**
+ * Template Filtes
+ */
 // add_filter( 'archive_reviews_title', function($t){ return 'Отзывы наших покупателей'; } );
 
 // if(class_exists('WPAdvancedPostType')){
@@ -94,3 +92,8 @@ add_action( 'wp_enqueue_scripts', '_theme_styles_and_scripts', 999 );
 //  $types -> add_type( 'news', 'News');
 //  $types -> reg_types();
 // }
+
+add_filter( 'content_columns', 'content_columns_default', 10, 1 );
+function content_columns_default($columns){
+  return is_singular() ? 1 : 2;
+}
