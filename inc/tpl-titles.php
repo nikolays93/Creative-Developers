@@ -53,6 +53,8 @@ function the_advanced_title( $post_id = null, $args = array() ){
 
   if( $title = get_advanced_title($post_id, $args) )
     echo $before . $title . $after;
+
+  do_action( 'theme_after_title' );
 }
 
 /**

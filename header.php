@@ -11,16 +11,16 @@
 	<div id="page" class="site">
 		<div class="container site-header">
 			<div class="row head-info">
-				<div class="col-4 logotype"><?php the_custom_logo(); ?></div>
-				<div class="col-4">
-					<?php echo do_shortcode('[our_address]'); ?>
+				<div class="col-4 first-column">
+				<?php
+					do_action( 'first_head_column' );
+				?>
 				</div>
-				<div class="col-4">
-					<?php // echo do_shortcode('[our_numbers]'); ?>
-					<?php // echo do_shortcode('[our_email]'); ?>
-					<?php // echo do_shortcode('[our_time_work]'); ?>
-					<?php // echo do_shortcode('[our_socials]'); ?>
-					<?php // echo get_company_first_number(); ?>
+				<div class="col-4 second-column">
+					<?php do_action( 'second_head_column' ); ?>
+				</div>
+				<div class="col-4 third-column">
+					<?php do_action( 'third_head_column' ); ?>
 				</div>
 			</div><!--.row head-info-->
 		</div>
