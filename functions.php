@@ -13,7 +13,7 @@ $tpl_uri = get_template_directory();
 
 require_once $tpl_uri . '/inc/debugger.php';       // * Debug функции
 require_once $tpl_uri . '/inc/tpl-view-settings.php';
-require_once $tpl_uri . '/inc/tpl-company-info.php';
+// require_once $tpl_uri . '/inc/tpl-company-info.php';
 
 require_once $tpl_uri . '/inc/tpl.php';
 require_once $tpl_uri . '/inc/tpl-titles.php';     // * Шаблоны заголовков
