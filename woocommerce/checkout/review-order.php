@@ -19,6 +19,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+if ( ! is_ajax() )
+	echo '<div class="col-12 col-sm-6">';
 ?>
 <table class="shop_table woocommerce-checkout-review-order-table">
 	<thead>
@@ -111,3 +114,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	</tfoot>
 </table>
+<?php 
+if ( ! is_ajax() )
+	echo '</div>';
