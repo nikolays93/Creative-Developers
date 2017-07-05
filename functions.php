@@ -13,8 +13,6 @@ $tpl_uri = get_template_directory();
 
 require_once $tpl_uri . '/inc/debugger.php';       // * Debug функции
 require_once $tpl_uri . '/inc/tpl-view-settings.php';
-// require_once $tpl_uri . '/inc/tpl-company-info.php';
-
 require_once $tpl_uri . '/inc/tpl.php';
 require_once $tpl_uri . '/inc/tpl-titles.php';     // * Шаблоны заголовков
 require_once $tpl_uri . '/inc/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
@@ -92,6 +90,37 @@ add_action( 'wp_enqueue_scripts', '_theme_styles_and_scripts', 999 );
 //  $types -> add_type( 'news', 'News');
 //  $types -> reg_types();
 // }
+
+add_action( 'first_head_column', 'the_custom_logo', 10 );
+
+add_action( 'second_head_column', 'head_column_two', 10 );
+function head_column_two(){
+  echo do_shortcode('[our_address]');
+}
+
+add_action( 'third_head_column', 'head_column_three', 10 );
+function head_column_three(){
+  /**
+   * From Organized Contacts Plug-in
+   */
+  // if( shortcode_exists( 'our_numbers' ) )
+  //   echo do_shortcode('[our_numbers]');
+  
+  // if( shortcode_exists( 'our_email' ) )
+  //   echo do_shortcode('[our_email]');
+  
+  // if( shortcode_exists( 'our_time_work' ) )
+  //   echo do_shortcode('[our_time_work]');
+  
+  // if( shortcode_exists( 'our_socials' ) )
+  //   echo do_shortcode('[our_socials]');
+  
+  // if( function_exists('get_company_number') )
+  //   echo get_company_number();
+}
+
+// add_action( 'theme_after_title', '_after_title' );
+// function _after_title(){}
 
 add_filter( 'content_columns', 'content_columns_default', 10, 1 );
 function content_columns_default($columns){
