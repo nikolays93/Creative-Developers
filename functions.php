@@ -95,7 +95,8 @@ add_action( 'first_head_column', 'the_custom_logo', 10 );
 
 add_action( 'second_head_column', 'head_column_two', 10 );
 function head_column_two(){
-  echo do_shortcode('[our_address]');
+  if( shortcode_exists( 'our_address' ) )
+    echo do_shortcode('[our_address]');
 }
 
 add_action( 'third_head_column', 'head_column_three', 10 );
@@ -126,3 +127,4 @@ add_filter( 'content_columns', 'content_columns_default', 10, 1 );
 function content_columns_default($columns){
   return is_singular() ? 1 : 2;
 }
+add_filter( 'content_image_html', 'add_thumbnail_link', 10, 2 );

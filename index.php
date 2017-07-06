@@ -13,7 +13,7 @@
 			breadcrumbs_from_yoast();
 	?>
 	<div class="row">
-		<div id="primary" class="<?php echo ( $type == 'post' && is_active_sidebar( 'archive' ) ) ? "col-9" : "col-12"; ?>">
+		<div id="primary" class="<?php echo ( is_show_sidebar() ) ? "col-9" : "col-12"; ?>">
 			<main id="main" class="main content" role="main">
 			<?php
 				if ( have_posts() ){
