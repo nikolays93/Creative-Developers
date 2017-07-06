@@ -25,8 +25,6 @@ function the_thumbnail(){
       apply_filters( 'content_thumbnail_size', 'thumbnail' ),
       apply_filters( 'content_thumbnail_args', array('class' => 'al') )
     );
-
-    add_filter( 'content_image_html', 'add_thumbnail_link', 10, 2 );
   }
 
   echo apply_filters( 'content_image_html', $thumbnail, $post_id );
@@ -77,6 +75,29 @@ function get_tpl_search_content( $return = false ){
       echo "<ul class='products row'>" . $products . "</ul>";
     echo $content;
   }
+}
+/**
+ * Показывать sidebar или нет
+ * @return boolean
+ */
+function is_show_sidebar(){
+  $post_type = get_post_type();
+  $enable_types = apply_filters( 'sidebar_archive_enable_on_type', array('post', 'page') );
+
+  if( function_exists('is_woocommerce') ){
+    if( is_woocommerce() || is_shop() && is_active_sidebar('woocommerce')  )
+       $show_sidebar = 'woocommerce';
+    if( is_cart() || is_checkout() || is_account_page())
+      $show_sidebar = false;
+    elseif( is_active_sidebar('archive') && in_array($post_type, $enable_types) )
+      $show_sidebar = 'archive';
+  }
+  else {
+    if( is_active_sidebar('archive') && in_array($post_type, $enable_types) )
+      $show_sidebar = 'archive';
+  }
+
+  return apply_filters( 'enable_sidebar', $show_sidebar );
 }
 
 /**
