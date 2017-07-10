@@ -63,14 +63,22 @@ function _theme_styles_and_scripts() {
   /**
    * Enqueue Style CSS or SASS/SCSS (if exists)
    */
-  $ver = get_option('scss_cache') ? get_option('scss_cache') : '1.0';
-  $styles = array('/style'.$suffix.'.css', '/style.css');
-  foreach ($styles as $style) {
-    if( is_readable(get_template_directory() . $style) ){
-      wp_enqueue_style( 'style', $tpl_uri . $style, array(), $ver, 'all' );
+  if( $cache = get_option('scss-cache') ){
+    foreach (array('/style.scss', '/style'.$suffix.'.scss') as $stylename) {
+      if( !isset($cache[$stylename]) )
+        continue;
+
+      $style = str_replace('.scss', '.css', $stylename);
+      $ver = $cache[$stylename];
       break;
     }
   }
+  else {
+    $style = '/style.css';
+    $ver = '1.0';
+  }
+  
+  wp_enqueue_style( 'style', $tpl_uri . $style, array(), $ver, 'all' );
 
   // wp_deregister_script( 'jquery' );
   // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
