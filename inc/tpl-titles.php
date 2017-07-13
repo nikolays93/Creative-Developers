@@ -18,11 +18,7 @@ function get_advanced_title( $post_id = null, $args = array() ){
   /**
    * Get Title
    */
-  if(function_exists('get_second_title'))
-    $title = get_second_title($post_id);
-
-  if( empty($title) )
-    $title = get_the_title($post_id);
+  $title = get_the_title($post_id);
   
   /**
    * Get Edit Post Icon
