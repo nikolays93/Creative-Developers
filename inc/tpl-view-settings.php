@@ -14,6 +14,7 @@ class themeCustomizer {
     'RobotoSlab'  => 'Roboto Slab',
     'PTSerif' =>  'PT Serif',
     'PTSans'  => 'PT Sans',
+    'PTMono'  => 'PT Mono',
     'Cuprum'  => 'Cuprum',
     'Tahoma'  => 'Tahoma',
     'Ubuntu' => 'Ubuntu',
@@ -144,6 +145,10 @@ class themeCustomizer {
         case 'PTSerif':
           $font_code[] = "https://fonts.googleapis.com/css?family=PT+Serif:400,700&subset=latin,cyrillic";
           $family = "'PT Serif', serif";
+          break;
+        case 'PTMono':
+          $font_code[] = "https://fonts.googleapis.com/css?family=PT+Mono&amp;subset=cyrillic";
+          $family = "'PT Mono', monospace";
           break;
         case 'Lobster':
           $font_code[] = "https://fonts.googleapis.com/css?family=Lobster:400,700&subset=latin,cyrillic";
