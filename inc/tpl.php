@@ -84,6 +84,7 @@ function is_show_sidebar(){
   $post_type = get_post_type();
   $enable_types = apply_filters( 'sidebar_archive_enable_on_type', array('post', 'page') );
 
+  $show_sidebar = false;
   if( function_exists('is_woocommerce') ){
     if( is_woocommerce() || is_shop() && is_active_sidebar('woocommerce')  )
        $show_sidebar = 'woocommerce';
