@@ -17,6 +17,7 @@ class themeCustomizer {
     'PTMono'  => 'PT Mono',
     'Cuprum'  => 'Cuprum',
     'Tahoma'  => 'Tahoma',
+    'Verdana' => 'Verdana',
     'Ubuntu' => 'Ubuntu',
     'Garamond' => 'Garamond',
     'Lobster'   =>  'Lobster',
@@ -26,11 +27,11 @@ class themeCustomizer {
     add_action( 'customize_register', array($this, 'print_settings') );
     add_action( 'wp_head', array($this, 'set_dp_format') );
     add_action( 'wp_head', array($this, 'set_custom_font') );
-    
+
     if (get_theme_mod( 'allow_click', false ))
       add_action( 'wp_head', array($this, 'allow_dropdown_click') );
   }
-  
+
   function print_settings( $wp_customize ) {
     /**
      * Настройки отображения
@@ -102,7 +103,7 @@ class themeCustomizer {
     echo $meta;
   }
   function allow_dropdown_click(){
-    
+
     echo '<style>.navbar-default .navbar-nav .nav-item:hover > .dropdown-menu { display: block; }</style>';
   }
   function set_custom_font(){
@@ -110,7 +111,7 @@ class themeCustomizer {
       // Загружаем основной шрифт
     $fonts = array( get_theme_mod( 'custom_body_font' ),
     get_theme_mod( 'custom_headlines_font' ), );
-        
+
     foreach ($fonts as $key => $font):
       $family = false;
       switch ($font) {
@@ -162,6 +163,9 @@ class themeCustomizer {
           break;
         case 'Tahoma':
           $family = "Tahoma, Arial, Helvetica, sans-serif";
+          break;
+        case 'Verdana':
+          $family = "Verdana, Geneva, sans-serif";
           break;
       }
 
