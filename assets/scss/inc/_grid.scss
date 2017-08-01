@@ -81,6 +81,24 @@ ul.row { @include clear-list(0); }
   padding-right: $pads;
   padding-left: $pads;
 }
+//
+// 5 Columns on row
+//
+.row.columns-5 {
+  margin-left: -$small-pads;
+  margin-right: -$small-pads;
+}
+.col-2-4,
+.col-sm-2-4,
+.col-md-2-4,
+.col-lg-2-4,
+.col-xl-2-4 {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: $small-pads;
+  padding-left: $small-pads;
+}
 
 @if $use-flex != true {
   .col-1, .col-2, .col-2-4, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
@@ -121,6 +139,7 @@ ul.row { @include clear-list(0); }
 .col-auto { @include column-width(auto); }
 .col-1 { @include column-width(8.333333%); }
 .col-2 { @include column-width(16.666667%); }
+.col-2-4 { @include column-width(20%); }
 .col-3 { @include column-width(25%); }
 .col-4 { @include column-width(33.333333%); }
 .col-5 { @include column-width(41.666667%); }
@@ -146,6 +165,7 @@ ul.row { @include clear-list(0); }
   .col-sm-auto { @include column-width(auto); }
   .col-sm-1 { @include column-width(8.333333%); }
   .col-sm-2 { @include column-width(16.666667%); }
+  .col-sm-2-4 { @include column-width(20%); }
   .col-sm-3 { @include column-width(25%); }
   .col-sm-4 { @include column-width(33.333333%); }
   .col-sm-5 { @include column-width(41.666667%); }
@@ -171,6 +191,7 @@ ul.row { @include clear-list(0); }
   .col-md-auto { @include column-width(auto); }
   .col-md-1 { @include column-width(8.333333%); }
   .col-md-2 { @include column-width(16.666667%); }
+  .col-md-2-4 { @include column-width(20%); }
   .col-md-3 { @include column-width(25%); }
   .col-md-4 { @include column-width(33.333333%); }
   .col-md-5 { @include column-width(41.666667%); }
@@ -196,6 +217,7 @@ ul.row { @include clear-list(0); }
   .col-lg-auto { @include column-width(auto); }
   .col-lg-1 { @include column-width(8.333333%); }
   .col-lg-2 { @include column-width(16.666667%); }
+  .col-lg-2-4 { @include column-width(20%); }
   .col-lg-3 { @include column-width(25%); }
   .col-lg-4 { @include column-width(33.333333%); }
   .col-lg-5 { @include column-width(41.666667%); }
@@ -221,6 +243,7 @@ ul.row { @include clear-list(0); }
   .col-xl-auto { @include column-width(auto); }
   .col-xl-1 { @include column-width(8.333333%); }
   .col-xl-2 { @include column-width(16.666667%); }
+  .col-xl-2-4 { @include column-width(20%); }
   .col-xl-3 { @include column-width(25%); }
   .col-xl-4 { @include column-width(33.333333%); }
   .col-xl-5 { @include column-width(41.666667%); }
@@ -231,45 +254,6 @@ ul.row { @include clear-list(0); }
   .col-xl-10{ @include column-width(83.333333%); }
   .col-xl-11{ @include column-width(91.666667%); }
   .col-xl-12{ @include column-width(100%); }
-}
-
-//
-// 5 Columns on row
-//
-.row.columns-5 {
-  margin-left: -$small-pads;
-  margin-right: -$small-pads;
-}
-.col-2-4,
-.col-sm-2-4,
-.col-md-2-4,
-.col-lg-2-4,
-.col-xl-2-4 {
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: $small-pads;
-  padding-left: $small-pads;
-}
-@media (min-width: 576px) {
-  .col-sm-2-4 {
-    @include column-width(20%);
-  }
-}
-@media (min-width: 768px) {
-  .col-md-2-4 {
-    @include column-width(20%);
-  }
-}
-@media (min-width: 992px) {
-  .col-lg-2-4 {
-    @include column-width(20%);
-  }
-}
-@media (min-width: 1200px) {
-  .col-xl-2-4 {
-    @include column-width(20%);
-  }
 }
 
 @media (min-width: 768px){
