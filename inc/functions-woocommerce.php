@@ -2,10 +2,63 @@
 if ( ! defined( 'ABSPATH' ) )
 	exit; // Exit if accessed directly
 
-// Add theme WooCommerce support
-add_action( 'after_setup_theme', function(){
+if( !class_exists('WooCommerce') )
+	return;
+
+/**
+ * Add WooCommerce Support
+ * Functions
+ * Filters
+ * Placeholder
+ * Currency
+ * Tabs
+ * Account Menu Items (Personal page)
+ * Required fileds for account
+ * LogOut after register new customer
+ * Order Statuses
+ * Disable Styles
+ * Register Sidebar
+ * Adress Fields
+ * Checkout fileds (left fields)
+ * Oldest format variations price (from $)
+ */
+
+// Add Theme WooCommerce Support
+add_action( 'after_setup_theme', 'add_custom_theme_woocommerce_support' );
+function add_custom_theme_woocommerce_support(){
 	add_theme_support( 'woocommerce' );
-} );
+}
+
+/**
+ * Вернет объект таксономии если на странице есть категории товара
+ * @param  string $taxonomy название таксаномии (Не уверен что логично изменять)
+ * @return array | false 	ids дочерних категорий | не удалось получить
+ */
+function get_childrens_product_cats($taxonomy = 'product_cat'){
+	$childrens = array();
+	if( is_shop() && !is_search() ){
+		$results = get_terms( $taxonomy );
+		if(is_wp_error( $results ))
+			return false;
+
+		foreach ($results as $term) {
+			$childrens[] = $term->term_id;
+		}
+	}
+	else {
+		$current = get_queried_object();
+		if( !empty($current->term_id) )
+			$childrens = get_term_children( $current->term_id, $taxonomy );
+
+		if(is_wp_error( $childrens ))
+			return false;
+	}
+
+	if( sizeof($childrens) < 1 )
+		return false; // Не удалось получить
+
+	return $childrens;
+}
 
 /**
  * Set Filters
@@ -17,15 +70,21 @@ remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 3
 
 // add_filter( 'add_content_link', '__return_true' );
 
+/**
+ * Change Default Placeholder
+ */
 add_filter('woocommerce_placeholder_img_src', 'placeholder_img_src');
 function placeholder_img_src( $src ) {
-	if( ! is_readable( get_template_directory() . '/img/placeholder.png' ) )
-		return $src;
+	$ph = '/img/placeholder.png';
+	if( is_readable( get_template_directory() . $ph ) )
+		$src = get_template_directory_uri() . $ph;
 
-	return get_template_directory_uri() . '/img/placeholder.png';
+	return $src;
 }
 
-// Меняем символ рубля (так как он работает не корректно на некоторых системах)
+/**
+ * Change Default WC Currency (to FA or 'P.')
+ */
 add_filter('woocommerce_currency_symbol', 'change_currency_symbol', 10, 2);
 function change_currency_symbol( $currency_symbol, $currency ) {
 	if( $currency == 'RUB' && !is_admin() ){
@@ -38,7 +97,9 @@ function change_currency_symbol( $currency_symbol, $currency ) {
 	return $currency_symbol;
 }
 
-// Если нужно изменить табы
+/**
+ * Change Default WC Tabs
+ */
 // add_filter( 'woocommerce_product_tabs', 'woo_change_tabs', 98 );
 function woo_change_tabs( $tabs ) {
 	global $post;
@@ -59,7 +120,64 @@ function woo_change_tabs( $tabs ) {
 	return $tabs;
 }
 
-// Отключить WooCommerce стили
+// add_filter ( 'woocommerce_account_menu_items', 'change_account_menu_items' );
+function change_account_menu_items( $items ) {
+	// $items = array(
+	// 	'dashboard' => __( 'Dashboard', 'woocommerce' ),
+	// 	'orders' => __( 'Orders', 'woocommerce' ),
+	// 	'downloads' => __( 'Downloads', 'woocommerce' ),
+	// 	'edit-address' => __( 'Addresses', 'woocommerce' ),
+	// 	'payment-methods' => __( 'Payment methods', 'woocommerce' ),
+	// 	'edit-account' => __( 'Account details', 'woocommerce' ),
+	// 	'customer-logout' => __( 'Logout', 'woocommerce' ),
+	// 	);
+
+	unset( $items['downloads'] );
+
+	return $items;
+}
+
+// add_filter( 'woocommerce_save_account_details_required_fields', 'change_account_required_inputs' );
+function change_account_required_inputs( $required_fields ){
+	$required_fields = array(
+		// 'account_first_name' => __( 'First name', 'woocommerce' ),
+		// 'account_last_name'  => __( 'Last name', 'woocommerce' ),
+		'account_email'      => __( 'Email address', 'woocommerce' ),
+		);
+	return $required_fields;
+}
+
+/**
+ * Do Not Log in after registration user.
+ */
+add_action('woocommerce_registration_redirect', 'logout_after_registration_redirect', 2);
+function logout_after_registration_redirect() {
+    wp_logout();
+    return home_url('/my-account/?register_success=1&action=login');
+}
+
+// add_filter( 'wc_order_statuses', 'change_wc_order_statuses' );
+function change_wc_order_statuses( $order_statuses ) {
+	// $order_statuses = array(
+	// 	'wc-pending'    => _x( 'Pending payment', 'Order status', 'woocommerce' ),
+	// 	'wc-processing' => _x( 'Processing', 'Order status', 'woocommerce' ),
+	// 	'wc-on-hold'    => _x( 'On hold', 'Order status', 'woocommerce' ),
+	// 	'wc-completed'  => _x( 'Completed', 'Order status', 'woocommerce' ),
+	// 	'wc-cancelled'  => _x( 'Cancelled', 'Order status', 'woocommerce' ),
+	// 	'wc-refunded'   => _x( 'Refunded', 'Order status', 'woocommerce' ),
+	// 	'wc-failed'     => _x( 'Failed', 'Order status', 'woocommerce' ),
+	// 	);
+
+    if( isset($order_statuses['wc-completed']) )
+    	$order_statuses['wc-completed'] = 'Оплачен';
+
+    return $order_statuses;
+}
+
+
+/**
+ * Disable Default WooCommerce Styles
+ */
 // add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
 function dp_dequeue_styles( $enqueue_styles ) {
 	unset( $enqueue_styles['woocommerce-general'] );	 // Отключение общих стилей
@@ -68,7 +186,10 @@ function dp_dequeue_styles( $enqueue_styles ) {
 	return $enqueue_styles;
 }
 
-// Регистрируем боковую зону для витрин магазина
+/**
+ * SideBar For WooCommerce
+ */
+add_action( 'widgets_init', 'init_woocommerce_sidebar' );
 function init_woocommerce_sidebar(){
 	register_sidebar( array(
 		'name'          => 'Витрины магазина',
@@ -79,12 +200,10 @@ function init_woocommerce_sidebar(){
 		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
 		) );
-	}
-add_action( 'widgets_init', 'init_woocommerce_sidebar' );
+}
 
-add_filter( 'woocommerce_default_address_fields', 'change_wc_default_address_fields', 20, 1 ); 
+add_filter( 'woocommerce_default_address_fields', 'change_wc_default_address_fields', 20, 1 );
 function change_wc_default_address_fields($fields){
-
 	// $fields['first_name']['priority'] = 10;
 	// $fields['last_name']['priority'] = 20;
 	// $fields['company']['priority'] = 30;
@@ -95,32 +214,31 @@ function change_wc_default_address_fields($fields){
 	$fields['state']['priority'] = 50;
 	unset( $fields['postcode'] );
 
-	$fields['last_name']['required'] = false; 
+	$fields['last_name']['required'] = false;
 	$fields['address_1']['required'] = false;
 
 	foreach ($fields as $field) {
-		$field['input_class'][] = 'form-control';//var_dump(  ); // 
+		$field['input_class'][] = 'form-control'; // add class for bootstrap
 	}
 
-	return $fields; 
+	return $fields;
 }
 
-add_filter( 'woocommerce_checkout_fields' , '_custom_wc_checkout_fields', 15, 1 );
-function _custom_wc_checkout_fields( $fields ){
+add_filter( 'woocommerce_checkout_fields' , 'change_woocommerce_checkout_fields', 15, 1 );
+function change_woocommerce_checkout_fields( $fields ){
 	$fields['billing']['billing_phone']['priority'] = 22;
 	$fields['billing']['billing_email']['priority'] = 24;
 
-	// add form-control class
 	foreach (array('billing', 'shipping', 'account', 'order') as $field_key) {
 		foreach ($fields[$field_key] as $key => &$field) {
-			$field['input_class'][] = 'form-control';
+			$field['input_class'][] = 'form-control'; // add class for bootstrap
 		}
 	}
 
 	return $fields;
 }
 
-// Используем формат цены вариативного товара WC 2.0
+// Используем формат цены вариативного товара WC 2.0 (к пр. "от 30 Р.")
 add_filter( 'woocommerce_variable_sale_price_html', 'wc_wc20_variation_price_format', 10, 2 );
 add_filter( 'woocommerce_variable_price_html', 'wc_wc20_variation_price_format', 10, 2 );
 function wc_wc20_variation_price_format( $price, $product ) {
@@ -128,7 +246,7 @@ function wc_wc20_variation_price_format( $price, $product ) {
     	$product->get_variation_price( 'min', true ),
     	$product->get_variation_price( 'max', true )
     	);
-    
+
     $price = wc_price( $prices[0] );
     if($prices[0] !== $prices[1])
     	$price = 'от ' . $price;
@@ -149,45 +267,12 @@ function wc_wc20_variation_price_format( $price, $product ) {
 }
 
 /**
- * Вернет объект таксономии если на странице есть категории товара
- * @param  string $taxonomy название таксаномии (Не уверен что логично изменять)
- * @return array | false 	ids дочерних категорий | не удалось получить
- */
-function get_children_product_cat_ids($taxonomy = 'product_cat'){
-	if( is_shop() && !is_search() ){
-		$results = get_terms( $taxonomy );
-		if(!empty($results)){
-			$result = array();
-			foreach ($results as $term) {
-				$result[] = $term->term_id;
-			}
-		}
-	}
-	else {
-		$o = get_queried_object();
-		$term_id = !empty($o->term_id) ? $o->term_id : 0;
-		$result = get_term_children( $term_id, $taxonomy );
-	}
-
-	if(empty($result))
-		return false; // Не удалось получить
-
-	return $result;
-}
-function has_product_cat(){
-	if(get_children_product_cat_ids())
-		return true;
-
-	return false;
-}
-
-/**
  * Add Customize
  */
 // Определяем сетку вывода товара
 add_filter( 'loop_shop_columns', 'wp_woo_shop_columns' );
 function wp_woo_shop_columns( $columns, $is_tax=false ) {
-	if( $is_tax && has_product_cat() ){
+	if( $is_tax && get_childrens_product_cats() !== false ){
 		$columns = (int)get_theme_mod( 'woo_product_cat_columns', 4 );
 		return ( $columns < 1) ? 4 : $columns;
 	}
