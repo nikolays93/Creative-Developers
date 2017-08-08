@@ -9,18 +9,19 @@
 /**
  * Include required files
  */
+define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
-require_once TPL . '/inc/debugger.php';       // * Debug функции
-require_once TPL . '/inc/tpl-view-settings.php';
-require_once TPL . '/inc/tpl.php';
-require_once TPL . '/inc/tpl-titles.php';     // * Шаблоны заголовков
-require_once TPL . '/inc/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
-require_once TPL . '/inc/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
-require_once TPL . '/inc/tpl-navigation.php'; // * Шаблон навигации
+require_once THEME . '/inc/debugger.php';       // * Debug функции
+require_once THEME . '/inc/tpl-view-settings.php';
+require_once THEME . '/inc/tpl.php';
+require_once THEME . '/inc/tpl-titles.php';     // * Шаблоны заголовков
+require_once THEME . '/inc/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
+require_once THEME . '/inc/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
+require_once THEME . '/inc/tpl-navigation.php'; // * Шаблон навигации
 
-if(function_exists('is_woocommerce'))
-  require_once TPL . '/inc/functions-woocommerce.php';
+if( class_exists('woocommerce') )
+  require_once THEME . '/inc/functions-woocommerce.php';
 
 function theme_setup() {
   // load_theme_textdomain( 'seo18theme', get_template_directory() . '/assets/languages' );
