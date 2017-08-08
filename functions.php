@@ -9,18 +9,18 @@
 /**
  * Include required files
  */
-$tpl_uri = get_template_directory();
+define('TPL', get_template_directory_uri());
 
-require_once $tpl_uri . '/inc/debugger.php';       // * Debug функции
-require_once $tpl_uri . '/inc/tpl-view-settings.php';
-require_once $tpl_uri . '/inc/tpl.php';
-require_once $tpl_uri . '/inc/tpl-titles.php';     // * Шаблоны заголовков
-require_once $tpl_uri . '/inc/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
-require_once $tpl_uri . '/inc/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
-require_once $tpl_uri . '/inc/tpl-navigation.php'; // * Шаблон навигации
+require_once TPL . '/inc/debugger.php';       // * Debug функции
+require_once TPL . '/inc/tpl-view-settings.php';
+require_once TPL . '/inc/tpl.php';
+require_once TPL . '/inc/tpl-titles.php';     // * Шаблоны заголовков
+require_once TPL . '/inc/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
+require_once TPL . '/inc/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
+require_once TPL . '/inc/tpl-navigation.php'; // * Шаблон навигации
 
 if(function_exists('is_woocommerce'))
-  require_once $tpl_uri . '/inc/functions-woocommerce.php';
+  require_once TPL . '/inc/functions-woocommerce.php';
 
 function theme_setup() {
   // load_theme_textdomain( 'seo18theme', get_template_directory() . '/assets/languages' );
@@ -37,7 +37,7 @@ function theme_setup() {
   ) );
 
   register_nav_menus( array(
-    'primary' => 'Главное меню', 
+    'primary' => 'Главное меню',
     'footer' => 'Меню в подвале',
   ) );
 }
@@ -57,33 +57,12 @@ function archive_widgets_init(){
 add_action( 'widgets_init', 'archive_widgets_init' );
 
 function _theme_styles_and_scripts() {
-  $tpl_uri = get_template_directory_uri();
-  $suffix = (!is_wp_debug()) ? '.min' : ''; 
-
-  /**
-   * Enqueue Style CSS or SASS/SCSS (if exists)
-   */
-  if( $cache = get_option('scss-cache') ){
-    foreach (array('/style.scss', '/style'.$suffix.'.scss') as $stylename) {
-      if( !isset($cache[$stylename]) )
-        continue;
-
-      $style = str_replace('.scss', '.css', $stylename);
-      $ver = $cache[$stylename];
-      break;
-    }
-  }
-  else {
-    $style = '/style.css';
-    $ver = '1.0';
-  }
-  
-  wp_enqueue_style( 'style', $tpl_uri . $style, array(), $ver, 'all' );
+  wp_enqueue_style( 'style', get_stylesheet_directory_uri(), array(), '1.0', 'all' );
 
   // wp_deregister_script( 'jquery' );
   // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
   wp_enqueue_script('jquery');
-  wp_enqueue_script('script', $tpl_uri . '/assets/script.js', array('jquery'), '1.0', true);
+  wp_enqueue_script('script', TPL . '/assets/script.js', array('jquery'), '1.0', true);
 }
 add_action( 'wp_enqueue_scripts', '_theme_styles_and_scripts', 999 );
 
