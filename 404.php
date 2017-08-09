@@ -4,7 +4,7 @@
 <div class="container">
 	<?php breadcrumbs_from_yoast(); ?>
 	<div class="row">
-		<div id="primary" class="<?php echo ( $type == 'post' && is_active_sidebar( 'archive' ) ) ? "col-9" : "col-12"; ?>">
+		<div id="primary" class="<?php echo ( is_active_sidebar( 'archive' ) ) ? "col-9" : "col-12"; ?>">
 			<main id="main" class="404 content" role="main">
 				<article class="error-404 not-found">
 					<?php the_advanced_title(null, array('title_tag' => 'h1')); ?>
