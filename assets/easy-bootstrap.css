@@ -427,9 +427,11 @@ abbr[title], abbr[data-original-title] {
 a, area, button, [role="button"], input, label, select, summary, textarea {
   touch-action: manipulation; }
 
-.clearfix::after {
-  display: block;
-  content: "";
+.clearfix:before, .clearfix:after, .dl-horizontal dd:before, .dl-horizontal dd:after, .container:before, .container:after, .container-fluid:before, .container-fluid:after, .row:before, .row:after, .form-horizontal .form-group:before, .form-horizontal .form-group:after, .btn-toolbar:before, .btn-toolbar:after, .btn-group-vertical > .btn-group:before, .btn-group-vertical > .btn-group:after, .nav:before, .nav:after, .navbar:before, .navbar:after, .navbar-header:before, .navbar-header:after, .navbar-collapse:before, .navbar-collapse:after, .pager:before, .pager:after, .panel-body:before, .panel-body:after, .modal-header:before, .modal-header:after, .modal-footer:before, .modal-footer:after {
+  display: table;
+  content: " "; }
+
+.clearfix:after, .dl-horizontal dd:after, .container:after, .container-fluid:after, .row:after, .form-horizontal .form-group:after, .btn-toolbar:after, .btn-group-vertical > .btn-group:after, .nav:after, .navbar:after, .navbar-header:after, .navbar-collapse:after, .pager:after, .panel-body:after, .modal-header:after, .modal-footer:after {
   clear: both; }
 
 .first {
@@ -602,7 +604,7 @@ ul.row {
   margin-right: -15px;
   margin-left: -15px; }
 
-.row > .first, .row.columns-1 [class*="col-"] + [class*="col-"], .row.columns-2 > [class*="col-"]:nth-child(2n+1), .row.columns-3 > [class*="col-"]:nth-child(3n+1), .row.columns-4 > [class*="col-"]:nth-child(4n+1), .row.columns-6 > [class*="col-"]:nth-child(5n+1) {
+.row > .first, .col-6:nth-child(2n+1), .col-4:nth-child(3n+1), .col-3:nth-child(4n+1), .col-2:nth-child(6n+1), .col-1:nth-child(12n+1) {
   clear: both; }
 
 .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl {
@@ -611,6 +613,17 @@ ul.row {
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px; }
+
+.row.columns-5 {
+  margin-left: -10px;
+  margin-right: -10px; }
+
+.col-2-4, .col-sm-2-4, .col-md-2-4, .col-lg-2-4, .col-xl-2-4 {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 10px;
+  padding-left: 10px; }
 
 .col-1, .col-2, .col-2-4, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
   float: left; }
@@ -649,6 +662,9 @@ ul.row {
 
 .col-2 {
   width: 16.66667%; }
+
+.col-2-4 {
+  width: 20%; }
 
 .col-3 {
   width: 25%; }
@@ -700,6 +716,9 @@ ul.row {
   .col-sm-2 {
     width: 16.66667%; }
 
+  .col-sm-2-4 {
+    width: 20%; }
+
   .col-sm-3 {
     width: 25%; }
 
@@ -749,6 +768,9 @@ ul.row {
 
   .col-md-2 {
     width: 16.66667%; }
+
+  .col-md-2-4 {
+    width: 20%; }
 
   .col-md-3 {
     width: 25%; }
@@ -800,6 +822,9 @@ ul.row {
   .col-lg-2 {
     width: 16.66667%; }
 
+  .col-lg-2-4 {
+    width: 20%; }
+
   .col-lg-3 {
     width: 25%; }
 
@@ -850,6 +875,9 @@ ul.row {
   .col-xl-2 {
     width: 16.66667%; }
 
+  .col-xl-2-4 {
+    width: 20%; }
+
   .col-xl-3 {
     width: 25%; }
 
@@ -879,33 +907,6 @@ ul.row {
 
   .col-xl-12 {
     width: 100%; } }
-
-.row.columns-5 {
-  margin-left: -10px;
-  margin-right: -10px; }
-
-.col-2-4, .col-sm-2-4, .col-md-2-4, .col-lg-2-4, .col-xl-2-4 {
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: 10px;
-  padding-left: 10px; }
-
-@media (min-width: 576px) {
-  .col-sm-2-4 {
-    width: 20%; } }
-
-@media (min-width: 768px) {
-  .col-md-2-4 {
-    width: 20%; } }
-
-@media (min-width: 992px) {
-  .col-lg-2-4 {
-    width: 20%; } }
-
-@media (min-width: 1200px) {
-  .col-xl-2-4 {
-    width: 20%; } }
 
 @media (min-width: 768px) {
   .sm {
