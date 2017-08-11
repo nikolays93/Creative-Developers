@@ -64,7 +64,6 @@ ol ol, ul ul, ol ul, ul ol {
   }
 }
 
-
 // Horizontal rules
 hr {
   margin-top:    20px;
@@ -141,7 +140,6 @@ th {
   text-align: left;
 }
 
-
 //
 // Forms
 //
@@ -179,9 +177,9 @@ input[type="number"]{
   line-height: 26px;
 }
 
-// 
+//
 // Hiddens
-// 
+//
 .fade {
   opacity: 0;
   -webkit-transition: opacity 0.15s linear;
@@ -192,9 +190,9 @@ input[type="number"]{
 .fade.show, .fade.in { opacity: 1; }
 
 .collapse { display: none; }
-.collapse.show { display: block; }
-tr.collapse.show { display: table-row; }
-tbody.collapse.show { display: table-row-group; }
+.collapse.show, .collapse.in { display: block; }
+tr.collapse.show, tr.collapse.in { display: table-row; }
+tbody.collapse.show, tbody.collapse.in { display: table-row-group; }
 
 .hidden-xs-up { display: none !important; }
 @media (max-width: 575px) { .hidden-xs-down { display: none !important; } }
@@ -411,5 +409,3 @@ textarea {
 .modal-footer:after {
   clear: both;
 }
-
-.first { clear: both; }
