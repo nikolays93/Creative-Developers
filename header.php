@@ -21,23 +21,15 @@
 					 /**
 					   * From Organized Contacts Plug-in
 					   */
-					  if( shortcode_exists( 'our_address' ) )
-					    echo do_shortcode('[our_address]');
-					  
-					  // if( shortcode_exists( 'our_numbers' ) )
-					  //   echo do_shortcode('[our_numbers]');
-					  
-					  // if( shortcode_exists( 'our_email' ) )
-					  //   echo do_shortcode('[our_email]');
-					  
-					  // if( shortcode_exists( 'our_time_work' ) )
-					  //   echo do_shortcode('[our_time_work]');
-					  
-					  // if( shortcode_exists( 'our_socials' ) )
-					  //   echo do_shortcode('[our_socials]');
-					  
-					  // if( function_exists('get_company_number') )
-					  //   echo get_company_number();
+					  if( shortcode_exists( 'company' ) ){
+					    echo do_shortcode('[company field="address"]');
+					    echo do_shortcode('[company field="numbers"]');
+					    echo do_shortcode('[company field="email"]');
+					    echo do_shortcode('[company field="time_work"]');
+					    echo do_shortcode('[company field="socials"]');
+
+					    echo do_shortcode('[phone del="," num="1"]'); // only first phone between ,
+					  }
 					?>
 				</div>
 				<div class="col-4 callback">
