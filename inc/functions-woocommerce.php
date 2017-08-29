@@ -204,6 +204,21 @@ function init_woocommerce_sidebar(){
 
 add_filter( 'woocommerce_default_address_fields', 'change_wc_default_address_fields', 20, 1 );
 function change_wc_default_address_fields($fields){
+    $need_address = false;
+    $chosen_methods = WC()->session->get( 'chosen_shipping_methods' );
+    if( is_array($chosen_methods) ){
+        $need_address = true;
+        foreach ($chosen_methods as $chosen_method) {
+            if( strpos($chosen_method, 'local_pickup') !== false )
+                $need_address = false;
+        }
+    }
+
+    if( ! $need_address ){
+        foreach (array('address_1', 'city', 'state', 'country') as $field) {
+            unset( $fields[$field]['required'] );
+        }
+    }
 	// $fields['first_name']['priority'] = 10;
 	// $fields['last_name']['priority'] = 20;
 	// $fields['company']['priority'] = 30;
@@ -226,8 +241,23 @@ function change_wc_default_address_fields($fields){
 
 add_filter( 'woocommerce_checkout_fields' , 'change_woocommerce_checkout_fields', 15, 1 );
 function change_woocommerce_checkout_fields( $fields ){
-	$fields['billing']['billing_phone']['priority'] = 22;
-	$fields['billing']['billing_email']['priority'] = 24;
+
+    $fields['billing']['billing_phone']['priority'] = 22;
+    $fields['billing']['billing_email']['priority'] = 24;
+
+    $arrReplaceToOrder = array(
+        'billing_country',
+        'billing_state',
+        'billing_city',
+        'billing_address_1',
+        );
+
+    $order = array();
+    foreach ($arrReplaceToOrder as $strReplace) {
+        $order['order'][$strReplace] = $fields['billing'][$strReplace];
+        unset( $fields['billing'][$strReplace] );
+    }
+    $fields['order'] = array_merge($order['order'], $fields['order']);
 
 	foreach (array('billing', 'shipping', 'account', 'order') as $field_key) {
 		foreach ($fields[$field_key] as $key => &$field) {
@@ -239,8 +269,8 @@ function change_woocommerce_checkout_fields( $fields ){
 }
 
 // Используем формат цены вариативного товара WC 2.0 (к пр. "от 30 Р.")
-add_filter( 'woocommerce_variable_sale_price_html', 'wc_wc20_variation_price_format', 10, 2 );
-add_filter( 'woocommerce_variable_price_html', 'wc_wc20_variation_price_format', 10, 2 );
+// add_filter( 'woocommerce_variable_sale_price_html', 'wc_wc20_variation_price_format', 10, 2 );
+// add_filter( 'woocommerce_variable_price_html', 'wc_wc20_variation_price_format', 10, 2 );
 function wc_wc20_variation_price_format( $price, $product ) {
     $prices = array(
     	$product->get_variation_price( 'min', true ),
@@ -399,3 +429,62 @@ function print_wc_settings( $wp_customize ){
     		)
     	);
 }
+
+/**
+ * WooCommerce Bootstrap
+ */
+define('SINGLE_PRODUCT_THUMBNAILS_COLUMN_CLASS', 'col-4');
+define('SINGLE_PRODUCT_SUMMARY_COLUMN_CLASS', 'col-8');
+
+add_filter( 'post_class', 'wc_product_post_class_column', 22, 3 );
+function wc_product_post_class_column( $classes, $class = '', $post_id = '' ){
+    global $woocommerce_loop;
+
+    if ( ! $post_id || ! in_array( get_post_type( $post_id ), array( 'product', 'product_variation' ) ) ) {
+        return $classes;
+    }
+
+    $product = wc_get_product( $post_id );
+
+    if ( $product ) {
+        if( is_singular() )
+            $columns = 1;
+        else
+            $columns = isset($woocommerce_loop['columns']) ? $woocommerce_loop['columns'] : 4;
+
+        $classes[] = get_default_bs_columns($columns);
+    }
+
+    return $classes;
+}
+
+// function start_bs_row(){
+//     echo "<div class='row'>";
+// }
+// function end_bs_row(){
+//     echo "</div><!-- .row -->";
+// }
+// function start_bs_column( $class ){
+//     echo "<div class='{$class}'>";
+// }
+// function end_bs_column(){
+//     echo "</div><!-- .column -->";
+// }
+
+// add_action('woocommerce_before_single_product', 'start_bs_row', 20);
+
+// add_action( 'woocommerce_before_single_product_summary', 'start_bs_row', 5 );
+
+// add_action( 'woocommerce_before_single_product_summary', function(){
+//     start_bs_column(SINGLE_PRODUCT_THUMBNAILS_COLUMN_CLASS); },
+//     5 );
+// add_action( 'woocommerce_before_single_product_summary', 'end_bs_column', 30 );
+
+// add_action( 'woocommerce_before_single_product_summary', function(){
+//     start_bs_column(SINGLE_PRODUCT_SUMMARY_COLUMN_CLASS); },
+//     30 );
+// add_action( 'woocommerce_after_single_product_summary', 'end_bs_column', 5 );
+
+// add_action( 'woocommerce_after_single_product_summary', 'end_bs_row', 5 );
+
+// add_action('woocommerce_after_single_product', 'end_bs_row', 20);
