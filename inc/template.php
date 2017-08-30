@@ -142,7 +142,7 @@ function get_advanced_title( $post_id = null, $args = array() ){
   $args = wp_parse_args( $args, $defaults );
 
   if(is_404()){
-    return sprintf( "<%1$s class='%2$s error_not_found'> Ошибка #404: страница не найдена. </%1$s>",
+    return sprintf( '<%1$s class="%2$s error_not_found"> Ошибка #404: страница не найдена. </%1$s>',
       esc_attr($args['tag']),
       esc_attr($args['class']) );
   }
@@ -166,7 +166,7 @@ function get_advanced_title( $post_id = null, $args = array() ){
 
     $link = ( $singular ) ? array('', '') : array('<a href="'.get_permalink( $post_id ).'">', '</a>');
 
-    return sprintf( "{$link[0]}<%1$s class='%2$s'>%4$s %3$s %5$s %6$s</%1$s>{$link[1]}",
+    return sprintf( $link[0].'<%1$s class="%2$s">%4$s %3$s %5$s %6$s</%1$s>'.$link[1],
       esc_attr($args['tag']),
       esc_attr($args['class']),
       $title,

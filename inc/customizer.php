@@ -75,7 +75,7 @@ class templateCustomizer {
    * Логотип
    */
   static function add_custom_brand($brand, $brand_class, $brand_title){
-    return sprintf("<a class='%2$s' title='%3$s' href='%4$s'>%1$s</a>",
+    return sprintf('<a class="%2$s" title="%3$s" href="%4$s">%1$s</a>',
       $brand,
       $brand_class,
       $brand_title,

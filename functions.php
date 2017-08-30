@@ -20,7 +20,7 @@ require_once THEME . '/inc/bootstrap.php';
 require_once THEME . '/inc/gallery.php';    // * Шаблон встроенной галереи wordpress
 
 if( class_exists('woocommerce') )
-  require_once THEME . '/inc/functions-woocommerce.php';
+  require_once THEME . '/inc/woocommerce.php';
 
 function theme_setup() {
   // load_theme_textdomain( 'seo18theme', get_template_directory() . '/assets/languages' );
