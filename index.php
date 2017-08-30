@@ -8,10 +8,7 @@
 ?>
 
 <div class="container">
-	<?php
-		if ( !is_front_page() )
-			breadcrumbs_from_yoast();
-	?>
+	<?php do_action('template_before_main_content'); ?>
 	<div class="row">
 		<div id="primary" class="<?php echo ( is_show_sidebar() ) ? "col-9" : "col-12"; ?>">
 			<main id="main" class="main content" role="main">

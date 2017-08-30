@@ -26,3 +26,8 @@ if(!function_exists('_debug')){
     }
   }
 }
+if(!function_exists('_dump')){
+  function _dump(&$var, $var_dump = false){
+    _debug($var, $var_dump);
+  }
+}

@@ -7,8 +7,9 @@ if( !class_exists('WooCommerce') )
 
 /**
  * Add WooCommerce Support
- * Functions
+ * Utilites
  * Filters
+ * Disable Styles
  * Placeholder
  * Currency
  * Tabs
@@ -16,7 +17,6 @@ if( !class_exists('WooCommerce') )
  * Required fileds for account
  * LogOut after register new customer
  * Order Statuses
- * Disable Styles
  * Register Sidebar
  * Adress Fields
  * Checkout fileds (left fields)
@@ -63,12 +63,23 @@ function get_childrens_product_cats($taxonomy = 'product_cat'){
 /**
  * Set Filters
  */
+
+/**************************************** Template Settings ***************************************/
 remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
 
 remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
 remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 
-// add_filter( 'add_content_link', '__return_true' );
+/**
+ * Disable Default WooCommerce Styles
+ */
+// add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
+function dp_dequeue_styles( $enqueue_styles ) {
+    unset( $enqueue_styles['woocommerce-general'] );     // Отключение общих стилей
+    unset( $enqueue_styles['woocommerce-layout'] );      // Отключение стилей шаблонов
+    unset( $enqueue_styles['woocommerce-smallscreen'] ); // Отключение оптимизации для маленьких экранов
+    return $enqueue_styles;
+}
 
 /**
  * Change Default Placeholder
@@ -87,13 +98,9 @@ function placeholder_img_src( $src ) {
  */
 add_filter('woocommerce_currency_symbol', 'change_currency_symbol', 10, 2);
 function change_currency_symbol( $currency_symbol, $currency ) {
-	if( $currency == 'RUB' && !is_admin() ){
-		if( defined('DT_PLUGIN_NAME') && $opt = get_option( DT_PLUGIN_NAME ) ){
-			if(! empty( $opt['FontAwesome'] ) )
-				$currency_symbol = '<i class="fa fa-rub"></i>';
-		}
+	if( $currency == 'RUB' && !is_admin() )
 		$currency_symbol = 'Р.';
-	}
+
 	return $currency_symbol;
 }
 
@@ -111,15 +118,12 @@ function woo_change_tabs( $tabs ) {
 			$tabs['description']['title'] = 'Описание товара';
 	}
 
-	if(isset($tabs['reviews']))
-		unset( $tabs['reviews'] );
-
-	if(isset($tabs['additional_information']))
-		unset( $tabs['additional_information'] );
-
+	// $tabs['reviews']
+    // $tabs['additional_information']
 	return $tabs;
 }
 
+/**************************************** Account Settings ****************************************/
 // add_filter ( 'woocommerce_account_menu_items', 'change_account_menu_items' );
 function change_account_menu_items( $items ) {
 	// $items = array(
@@ -156,6 +160,7 @@ function logout_after_registration_redirect() {
     return home_url('/my-account/?register_success=1&action=login');
 }
 
+/***************************************** Order Settings *****************************************/
 // add_filter( 'wc_order_statuses', 'change_wc_order_statuses' );
 function change_wc_order_statuses( $order_statuses ) {
 	// $order_statuses = array(
@@ -172,18 +177,6 @@ function change_wc_order_statuses( $order_statuses ) {
     	$order_statuses['wc-completed'] = 'Оплачен';
 
     return $order_statuses;
-}
-
-
-/**
- * Disable Default WooCommerce Styles
- */
-// add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
-function dp_dequeue_styles( $enqueue_styles ) {
-	unset( $enqueue_styles['woocommerce-general'] );	 // Отключение общих стилей
-	unset( $enqueue_styles['woocommerce-layout'] );		 // Отключение стилей шаблонов
-	unset( $enqueue_styles['woocommerce-smallscreen'] ); // Отключение оптимизации для маленьких экранов
-	return $enqueue_styles;
 }
 
 /**
@@ -429,62 +422,3 @@ function print_wc_settings( $wp_customize ){
     		)
     	);
 }
-
-/**
- * WooCommerce Bootstrap
- */
-define('SINGLE_PRODUCT_THUMBNAILS_COLUMN_CLASS', 'col-4');
-define('SINGLE_PRODUCT_SUMMARY_COLUMN_CLASS', 'col-8');
-
-add_filter( 'post_class', 'wc_product_post_class_column', 22, 3 );
-function wc_product_post_class_column( $classes, $class = '', $post_id = '' ){
-    global $woocommerce_loop;
-
-    if ( ! $post_id || ! in_array( get_post_type( $post_id ), array( 'product', 'product_variation' ) ) ) {
-        return $classes;
-    }
-
-    $product = wc_get_product( $post_id );
-
-    if ( $product ) {
-        if( is_singular() )
-            $columns = 1;
-        else
-            $columns = isset($woocommerce_loop['columns']) ? $woocommerce_loop['columns'] : 4;
-
-        $classes[] = get_default_bs_columns($columns);
-    }
-
-    return $classes;
-}
-
-// function start_bs_row(){
-//     echo "<div class='row'>";
-// }
-// function end_bs_row(){
-//     echo "</div><!-- .row -->";
-// }
-// function start_bs_column( $class ){
-//     echo "<div class='{$class}'>";
-// }
-// function end_bs_column(){
-//     echo "</div><!-- .column -->";
-// }
-
-// add_action('woocommerce_before_single_product', 'start_bs_row', 20);
-
-// add_action( 'woocommerce_before_single_product_summary', 'start_bs_row', 5 );
-
-// add_action( 'woocommerce_before_single_product_summary', function(){
-//     start_bs_column(SINGLE_PRODUCT_THUMBNAILS_COLUMN_CLASS); },
-//     5 );
-// add_action( 'woocommerce_before_single_product_summary', 'end_bs_column', 30 );
-
-// add_action( 'woocommerce_before_single_product_summary', function(){
-//     start_bs_column(SINGLE_PRODUCT_SUMMARY_COLUMN_CLASS); },
-//     30 );
-// add_action( 'woocommerce_after_single_product_summary', 'end_bs_column', 5 );
-
-// add_action( 'woocommerce_after_single_product_summary', 'end_bs_row', 5 );
-
-// add_action('woocommerce_after_single_product', 'end_bs_row', 20);

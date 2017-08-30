@@ -12,13 +12,3 @@
  * Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
  */
 ```
-
-has actions: 
-	- first_head_column
-	- second_head_column
-	- third_head_column
-
-	- theme_after_title
-
-has filters:
-	- content_columns
