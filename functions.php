@@ -21,7 +21,7 @@ require_once THEME . '/inc/tpl-gallery.php';    // * Шаблон встроен
 require_once THEME . '/inc/tpl-navigation.php'; // * Шаблон навигации
 
 if( class_exists('woocommerce') )
-  require_once THEME . '/inc/functions-woocommerce.php';
+  require_once THEME . '/inc/woocommerce.php';
 
 function theme_setup() {
   // load_theme_textdomain( 'seo18theme', get_template_directory() . '/assets/languages' );
@@ -82,4 +82,3 @@ function content_columns_default($columns){
 
   return $columns;
 }
-add_filter( 'content_image_html', 'add_thumbnail_link', 10, 2 );
