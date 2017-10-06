@@ -42,7 +42,7 @@ function get_tpl_content( $affix, $return = false ){
 
   while ( have_posts() ){
     the_post();
-    
+
     // need for search
     if( ! $affix )
       $affix = get_post_type();
@@ -107,9 +107,9 @@ function is_show_sidebar(){
 function the_template_pagination($echo=true){
   $args = array(
     'show_all'     => false,
-    'end_size'     => 1,    
-    'mid_size'     => 1,     
-    'prev_next'    => true,  
+    'end_size'     => 1,
+    'mid_size'     => 1,
+    'prev_next'    => true,
     'prev_text'    => '« Пред.',
     'next_text'    => 'След. »',
     'add_args'     => false,
@@ -121,7 +121,7 @@ function the_template_pagination($echo=true){
   }
   else {
     return get_the_posts_pagination($args);
-  }    
+  }
 }
 
 /**
@@ -220,7 +220,7 @@ function the_russian_date($tdate = '') {
     "September" => "сентября",
     "October" => "октября",
     "November" => "ноября",
-    "December" => "декабря",  
+    "December" => "декабря",
 
     "Sunday" => "воскресенье",
     "Monday" => "понедельник",
