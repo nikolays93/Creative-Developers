@@ -29,7 +29,17 @@ function the_thumbnail(){
 
   echo apply_filters( 'content_image_html', $thumbnail, $post_id );
 }
-function get_tpl_content( $affix, $return = false ){
+
+/**
+ * @param  string  $affix  post_type
+ * @param  boolean $return print or return
+ * @return html
+ */
+function get_tpl_content( $affix, $return = false, $container = 'row' ){
+  $templates = array();
+  $affix = (string) $affix;
+  $slug = 'template-parts/content';
+
   if($return)
     ob_start();
 
@@ -38,24 +48,43 @@ function get_tpl_content( $affix, $return = false ){
     the_archive_description( '<div class="taxonomy-description">', '</div>' );
   }
 
-  echo "<div class='row'>";
+  if( $container ) {
+    echo sprintf('<div class="%s">', esc_attr( $container ));
+  }
 
   while ( have_posts() ){
     the_post();
 
     // need for search
-    if( ! $affix )
+    if( $affix === false ) {
       $affix = get_post_type();
+    }
 
-    if( $affix != 'product' )
-      get_template_part( 'template-parts/content', $affix );
+    if( $affix !== 'product' ) {
+      if( is_single() ) {
+        $templates[] = "{$slug}-{$affix}-single.php";
+      }
+
+      if ( '' !== $affix ) {
+        $templates[] = "{$slug}-{$affix}.php";
+      }
+
+      if( is_single() ) {
+        $templates[] = "{$slug}-single.php";
+      }
+
+      $templates[] = "{$slug}.php";
+
+      locate_template($templates, true, false);
+    }
   }
 
-  echo "</div>";
+  if( $container ) echo '</div>';
 
   if($return)
     return ob_get_clean();
 }
+
 function get_tpl_search_content( $return = false ){
   ob_start();
   while ( have_posts() ){
