@@ -279,16 +279,6 @@ function custom_admin_footer() {
  */
 
 /**
- * yoast крошки ( Для активации установить/активировать плагин, дополнительно => breadcrumbs => enable )
- */
-add_action( 'woocommerce_before_main_content', 'breadcrumbs_from_yoast', 25 );
-function breadcrumbs_from_yoast(){
-  if ( function_exists('yoast_breadcrumb') ) {
-    yoast_breadcrumb('<p id="breadcrumbs">','</p>');
-  }
-}
-
-/**
  * Отчистить мета теги
  */
 add_action( 'init', 'template_head_cleanup' );
