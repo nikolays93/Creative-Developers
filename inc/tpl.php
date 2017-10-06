@@ -4,6 +4,19 @@ if ( ! defined( 'ABSPATH' ) )
     exit; // Exit if accessed directly
 
 /**
+ * Мякиш от yoast SEO ( установить/активировать плагин, дополнительно => breadcrumbs )
+ *
+ * @link https://wordpress.org/plugins/wordpress-seo/
+ */
+function breadcrumbs_from_yoast(){
+    if ( function_exists('yoast_breadcrumb') ) {
+        echo "<div class='container'>";
+        yoast_breadcrumb('<p id="breadcrumbs">','</p>');
+        echo "</div>";
+    }
+}
+
+/**
  * Добавить ссылку на превью
  *
  * @param html $thumbnail HTML Код превью

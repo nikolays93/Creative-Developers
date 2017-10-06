@@ -67,18 +67,7 @@ function dp_dequeue_styles( $enqueue_styles ) {
     return $enqueue_styles;
 }
 
-/**
- * yoast мякиши ( @see установить/активировать плагин, дополнительно => breadcrumbs )
- * @link https://wordpress.org/plugins/wordpress-seo/
- */
 add_action( 'woocommerce_before_main_content', 'breadcrumbs_from_yoast', 5 );
-function breadcrumbs_from_yoast(){
-  if ( function_exists('yoast_breadcrumb') ) {
-    echo "<div class='container'>";
-    yoast_breadcrumb('<p id="breadcrumbs">','</p>');
-    echo "</div>";
-  }
-}
 
 /**
  * SideBar For WooCommerce
