@@ -18,7 +18,7 @@ function get_default_bs_columns($columns_count="4", $non_responsive=false){
     case '5': $col = (!$non_responsive) ? 'col-12 col-sm-6 col-md-2-4 col-lg-2-4' : 'col-2-4'; break; // be careful
     case '6': $col = (!$non_responsive) ? 'col-6 col-sm-4 col-md-2 col-lg-2' : 'col-2'; break;
     case '12': $col= (!$non_responsive) ? 'col-4 col-sm-3 col-md-1 col-lg-1' : 'col-1'; break;
-    
+
     default: $col = false; break;
   }
   return $col;
@@ -57,21 +57,21 @@ class Bootstrap_walker extends Walker_Nav_Menu{
   if( is_object($args) ):
    global $wp_query;
    $indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
-  
+
    $class_names = $value = '';
-  
+
     // If the item has children, add the dropdown class for bootstrap
-    
-    
+
+
     if ( $args->has_children ) {
       $class_names = "dropdown ";
     }
-  
+
     $classes = empty( $object->classes ) ? array() : (array) $object->classes;
-    
+
     $class_names .= join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $object ) );
     $class_names = ' class="'. esc_attr( $class_names ) . '"';
-       
+
     $output .= $indent . '<li id="menu-item-'. $object->ID . '"' . $value . $class_names .'>';
 
     $attributes  = ! empty( $object->attr_title ) ? ' title="'  . esc_attr( $object->attr_title ) .'"' : '';
@@ -107,17 +107,17 @@ class Bootstrap_walker extends Walker_Nav_Menu{
     $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $object, $depth, $args );
   endif; // is_object
   } // end start_el function
-        
+
   function start_lvl(&$output, $depth = 0, $args = Array()) {
     $indent = str_repeat("\t", $depth);
     $output .= "\n$indent<ul class=\"dropdown-menu\">\n";
   }
-      
+
   function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ){
     $id_field = $this->db_fields['id'];
     if ( is_object( $args[0] ) ) {
         $args[0]->has_children = ! empty( $children_elements[$element->$id_field] );
     }
     return parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
-  }        
+  }
 }

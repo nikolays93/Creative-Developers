@@ -17,6 +17,96 @@ function breadcrumbs_from_yoast(){
 }
 
 /**
+ * Шаблон заголовка
+ */
+function get_advanced_title( $post_id = null, $args = array() ){
+    $args = wp_parse_args( $args, array(
+        'title_tag' => '',
+        'title_class' => 'post-title',
+        'clear' => false,
+        'force' => false, // multiple | single
+        ) );
+
+    switch ( $args['force'] ) {
+        case 'single':
+            $is_singular = true;
+            break;
+        case 'multiple':
+            $is_singular = false;
+            break;
+        default:
+            $is_singular = is_singular();
+            break;
+    }
+
+    if( ! $args['title_tag'] ) {
+        $args['title_tag'] = $is_singular ? 'h1' : 'h2';
+    }
+
+    if( is_404() ) {
+        return sprintf( '<%1$s class="%2$s error_not_found"> Ошибка #404: страница не найдена. </%1$s>',
+            esc_html( $args['title_tag'] ),
+            esc_attr( $args['title_class'] )
+            );
+    }
+
+    /**
+     * Get Title
+     */
+    if( ! $title = get_the_title( $post_id ) ) {
+        // Title Not Found
+        return false;
+    }
+
+    /**
+     * Get Edit Post Icon
+     */
+    $edit_tpl = sprintf('<object><a href="%s" class="%s"></a></object>',
+        get_edit_post_link( $post_id ),
+        'dashicons dashicons-welcome-write-blog no-underline'
+        );
+
+    if( $args['clear'] ) {
+        return $title . ' ' . $edit_tpl;
+    }
+
+    $result = array();
+
+    if( ! $is_singular ) $result[] = sprintf('<a href="%s">', get_permalink( $post_id ));
+
+    $result[] = "\t" . sprintf('<%1$s class="%2$s">%3$s %4$s</%1$s>',
+        esc_html( $args['title_tag'] ),
+        esc_attr( $args['title_class'] ),
+        $title,
+        $edit_tpl
+        );
+
+    if( ! $is_singular ) $result[] = '</a>';
+
+    return implode("\r\n", $result);
+}
+
+function the_advanced_title( $post_id = null, $args = array() ){
+    $args = wp_parse_args( $args, array(
+        'before' => '',
+        'after'  => '',
+        ) );
+
+    if( $title = get_advanced_title($post_id, $args) ) {
+        echo $args['before'] . $title . $args['after'];
+    }
+
+    do_action( 'theme_after_title', $title );
+}
+
+add_filter( 'get_the_archive_title', 'theme_archive_title_filter', 10, 1 );
+function theme_archive_title_filter( $title ) {
+    $title = preg_replace("/[\w]+: /ui", "", $title);
+
+    return $title;
+}
+
+/**
  * Добавить ссылку на превью
  *
  * @param html $thumbnail HTML Код превью
@@ -51,11 +141,11 @@ function the_thumbnail( $post_id = false, $add_link = false ) {
             );
     }
 
-    $thumbnail_html = apply_filters( 'content_image_html', $thumbnail, $post_id );
-
     if( $add_link ) {
         $thumbnail_html = add_thumbnail_link( $thumbnail_html, $post_id );
     }
+
+    $thumbnail_html = apply_filters( 'content_image_html', $thumbnail, $post_id, $add_link );
 
     echo $thumbnail_html;
 }
@@ -75,7 +165,7 @@ function get_tpl_content( $affix, $return = false, $container = 'row' ) {
     if( $return ) ob_start();
 
     if( ! is_front_page() && is_archive() && !is_search() ){
-        the_advanced_archive_title();
+        the_archive_title('<h1 class="taxanomy-title">', '</h1>');
         the_archive_description( '<div class="taxonomy-description">', '</div>' );
     }
 
@@ -91,17 +181,13 @@ function get_tpl_content( $affix, $return = false, $container = 'row' ) {
             $affix = get_post_type();
         }
 
-        if( $affix !== 'product' ) {
+        if( 'product' !== $affix ) {
             if( is_single() ) {
                 $templates[] = "{$slug}-{$affix}-single.php";
-            }
-
-            if ( '' !== $affix ) {
-                $templates[] = "{$slug}-{$affix}.php";
-            }
-
-            if( is_single() ) {
                 $templates[] = "{$slug}-single.php";
+            }
+            elseif ( '' !== $affix ) {
+                $templates[] = "{$slug}-{$affix}.php";
             }
 
             $templates[] = "{$slug}.php";
@@ -170,27 +256,6 @@ function is_show_sidebar() {
     }
 
     return apply_filters( 'enable_sidebar', $show_sidebar );
-}
-
-/**
- * Принятые настройки постраничной навигации
- */
-function the_template_pagination( $echo = true ) {
-    $args = apply_filters( 'theme_template_pagination', array(
-        'show_all'     => false,
-        'end_size'     => 1,
-        'mid_size'     => 1,
-        'prev_next'    => true,
-        'prev_text'    => '« Пред.',
-        'next_text'    => 'След. »',
-        'add_args'     => false,
-        ) );
-
-    if( ! $echo ) {
-        return get_the_posts_pagination($args);
-    }
-
-    the_posts_pagination($args);
 }
 
 /**

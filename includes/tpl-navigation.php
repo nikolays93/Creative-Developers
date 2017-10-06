@@ -3,7 +3,7 @@ function default_theme_nav(
   $args = array( 'container_class' => 'container' ),
   $container = array( '<nav class="navbar navbar-default non-responsive">', '</nav>' ),
   $toggler = '' ){
-  
+
   if( get_theme_mod( 'responsive' ) ){
     $container = array( '<section class="navbar-default"><nav class="container navbar navbar-toggleable-md">', '</nav></section>' );
     $args['container_class'] = 'collapse navbar-collapse navbar-responsive-collapse';
@@ -44,4 +44,25 @@ function wp_footer_links() {
       'container_class' => 'footer clearfix', /* container class */
     )
   );
+}
+
+/**
+ * Принятые настройки постраничной навигации
+ */
+function the_template_pagination( $echo = true ) {
+    $args = apply_filters( 'theme_template_pagination', array(
+        'show_all'     => false,
+        'end_size'     => 1,
+        'mid_size'     => 1,
+        'prev_next'    => true,
+        'prev_text'    => '« Пред.',
+        'next_text'    => 'След. »',
+        'add_args'     => false,
+        ) );
+
+    if( ! $echo ) {
+        return get_the_posts_pagination($args);
+    }
+
+    the_posts_pagination($args);
 }
