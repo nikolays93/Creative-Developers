@@ -310,6 +310,20 @@ function get_parent_page_id( $post ) {
 /*******************************************************************************
  * Template Filters and Actions
  */
+add_filter( 'post_class', 'add_theme_post_class', 10, 3 );
+function add_theme_post_class($classes, $class, $post_id) {
+    if( is_singular() ) {
+        $classes[] = 'media';
+        $columns = apply_filters( 'single_content_columns', 1 );
+    }
+    else {
+        $columns = apply_filters( 'content_columns', 1 );
+    }
+
+    $classes[] = get_default_bs_columns( (int)$columns );
+
+    return $classes;
+}
 
 /**
  * Логотип
