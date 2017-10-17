@@ -18,11 +18,6 @@
 			<?php
 				if ( have_posts() ){
 					if( is_search() ){
-						echo'
-						<header class="archive-header">
-							<h1>Результаты поиска: '. get_search_query().'</h1>
-						</header>';
-
 						get_tpl_search_content();
 					}
 					else {

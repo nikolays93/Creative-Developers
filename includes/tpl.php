@@ -204,6 +204,12 @@ function get_tpl_content( $affix, $return = false, $container = 'row' ) {
 function get_tpl_search_content( $return = false ) {
     ob_start();
 
+    ?>
+    <header class="archive-header">
+        <h1>Результаты поиска: <?php get_search_query(); ?></h1>
+    </header>
+    <?php
+
     while ( have_posts() ) {
         the_post();
 
