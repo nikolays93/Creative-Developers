@@ -59,11 +59,11 @@ function get_children_product_terms($taxonomy = 'product_cat') {
 /**
  * Disable Default WooCommerce Styles
  */
-// add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
+add_filter( 'woocommerce_enqueue_styles', 'dp_dequeue_styles' );
 function dp_dequeue_styles( $enqueue_styles ) {
-    unset( $enqueue_styles['woocommerce-general'] );     // Отключение общих стилей
+    // unset( $enqueue_styles['woocommerce-general'] );     // Отключение общих стилей
     unset( $enqueue_styles['woocommerce-layout'] );      // Отключение стилей шаблонов
-    unset( $enqueue_styles['woocommerce-smallscreen'] ); // Отключение оптимизации для маленьких экранов
+    // unset( $enqueue_styles['woocommerce-smallscreen'] ); // Отключение оптимизации для маленьких экранов
     return $enqueue_styles;
 }
 

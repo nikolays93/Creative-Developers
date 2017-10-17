@@ -126,6 +126,16 @@ function wp_woo_shop_columns( $columns, $is_tax=false ) {
     return ( $columns < 1) ? 4 : $columns;
 }
 
+add_filter( 'post_class', 'add_theme_product_post_class', 10, 3 );
+function add_theme_product_post_class($classes, $class, $post_id) {
+    if( 'product' === get_post_type() && ! is_singular() ) {
+        $columns = apply_filters( 'product_content_columns', get_theme_mod( 'woo_product_columns', 4 ) );
+        $classes[] = get_default_bs_columns( (int)$columns );
+    }
+
+    return $classes;
+}
+
 // Количество товаров на странице
 add_filter( 'loop_shop_per_page', 'customize_per_page', 20 );
 function customize_per_page($cols){

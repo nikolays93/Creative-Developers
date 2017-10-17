@@ -245,7 +245,7 @@ function is_show_sidebar() {
         $enable_types = apply_filters( 'sidebar_archive_enable_on_type', array('post', 'page') );
 
         if( function_exists('is_woocommerce') ){
-            if( is_woocommerce() || is_shop() && is_active_sidebar('woocommerce') ) {
+            if( (is_woocommerce() || is_shop()) && is_active_sidebar('woocommerce') ) {
                 $show_sidebar = 'woocommerce';
             }
             if( is_cart() || is_checkout() || is_account_page() ) {
@@ -313,14 +313,16 @@ function get_parent_page_id( $post ) {
  */
 add_filter( 'post_class', 'add_theme_post_class', 10, 3 );
 function add_theme_post_class($classes, $class, $post_id) {
-    if( is_singular() ) {
-        $columns = apply_filters( 'single_content_columns', 1 );
-    }
-    else {
-        $columns = apply_filters( 'content_columns', 1 );
-    }
+    if( 'product' !== get_post_type() ) {
+        if( is_singular() ) {
+            $columns = apply_filters( 'single_content_columns', 1 );
+        }
+        else {
+            $columns = apply_filters( 'content_columns', 1 );
+        }
 
-    $classes[] = get_default_bs_columns( (int)$columns );
+        $classes[] = get_default_bs_columns( (int)$columns );
+    }
 
     return $classes;
 }

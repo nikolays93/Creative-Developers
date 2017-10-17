@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) )    exit; // Exit if accessed directly
 /**
  * Получить стандартные классы ячейки bootstrap сетки
  */
-function get_default_bs_columns($columns_count="4", $non_responsive=false){
+function get_default_bs_columns($columns_count="4", $non_responsive=true){
   switch ($columns_count) {
     case '1': $col = 'col-12'; break;
     case '2': $col = (!$non_responsive) ? 'col-6 col-sm-6 col-md-6 col-lg-6' : 'col-6'; break;

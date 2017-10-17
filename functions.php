@@ -18,8 +18,10 @@ require_once THEME . '/includes/tpl-bootstrap.php';  // * Вспомагател
 require_once THEME . '/includes/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
 require_once THEME . '/includes/tpl-navigation.php'; // * Шаблон навигации
 
-if( class_exists('woocommerce') )
+if( class_exists('woocommerce') ) {
   require_once THEME . '/includes/woocommerce.php';
+  require_once THEME . '/includes/wc-customizer.php';
+}
 
 function theme_setup() {
   // load_theme_textdomain( 'seo18theme', get_template_directory() . '/assets/languages' );

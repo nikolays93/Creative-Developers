@@ -38,48 +38,18 @@ Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
     margin-top: 20px;
     margin-bottom: 20px; }
 
-.row.products .product {
-  margin-bottom: 20px; }
-  .row.products .product .product-thumbnail .onsale {
-    position: absolute;
-    left: 5%;
-    top: 1rem;
-    line-height: 16px; }
-  .row.products .product h2 {
-    font-size: 18px;
-    margin-top: 0; }
-  .row.products .product .price {
-    display: block; }
-  .row.products .product-category {
+.post-type-archive-product .row.products {
+  margin: 0 -15px 1em; }
+  .post-type-archive-product .row.products .product {
     margin-bottom: 20px; }
-  .row.products .product-category .cat-thumbnail {
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 150px; }
-  .row.products .product-category h2 {
-    font-size: 18px;
-    margin-top: 0; }
-  .row.products .card > a, .row.products .card-block > a:first-child, .row.products .card > a:hover, .row.products .card-block > a:first-child:hover, .row.products .card > a:focus, .row.products .card-block > a:first-child:focus {
-    text-decoration: none;
-    color: #000; }
+    .post-type-archive-product .row.products .product h2 {
+      color: #444; }
 
-.single-product #secondary {
-  position: relative; }
-  .single-product #secondary .onsale {
-    position: absolute;
-    left: 5%;
-    top: 10px; }
-  .single-product #secondary .woocommerce-main-image > div {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    height: 400px; }
-  .single-product #secondary .thumbnails {
-    margin: 10px -5px; }
-  .single-product #secondary .thumbnails > a {
-    display: block;
-    padding-left: 5px;
-    padding-right: 5px; }
+.single-product #content div.product div.images {
+  float: left;
+  width: 48%; }
+  .single-product #content div.product div.summary {
+    float: right;
+    width: 48%; }
+    .single-product #content div.product div.summary + .woocommerce-tabs {
+      clear: both; }

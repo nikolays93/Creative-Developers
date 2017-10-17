@@ -83,66 +83,26 @@ Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
 //
 // Woocommerce
 //
-.row.products {
+.post-type-archive-product .row.products {
+  margin: 0 -15px 1em;
   .product {
     margin-bottom: 20px;
-    .product-thumbnail {
-      .onsale {
-        position: absolute;
-        left: 5%;
-        top: 1rem;
-        line-height: 16px;
-      }
-    }
     h2 {
-      font-size: 18px;
-      margin-top: 0;
-    }
-    .price {
-      display: block;
-    }
-  }
-
-  .product-category {
-    margin-bottom: 20px;
-    .cat-thumbnail {
-      background-repeat: no-repeat;
-      background-position: center;
-      height: 150px;
-    }
-    h2 {
-      font-size: 18px;
-      margin-top: 0;
-    }
-  }
-
-  .card > a, .card-block > a:first-child {
-    &, &:hover, &:focus {
-      text-decoration: none;
-      color: #000;
+      color: #444;
     }
   }
 }
-.single-product {
-  #secondary {
-    position: relative;
-    .onsale { position: absolute; left: 5%; top: 10px; }
-    .woocommerce-main-image > div {
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      display: block;
-      margin: 0 auto;
-      width: 100%;
-      height: 400px;
-    }
-    .thumbnails {
-      margin: 10px -5px;
-      > a {
-        display: block;
-        padding-left: 5px;
-        padding-right: 5px;
-      }
+
+.single-product #content div.product {
+  div.images {
+    float: left;
+    width: 48%;
+  }
+  div.summary {
+    float: right;
+    width: 48%;
+    + .woocommerce-tabs {
+      clear: both;
     }
   }
 }
