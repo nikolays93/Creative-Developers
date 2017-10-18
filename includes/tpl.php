@@ -410,8 +410,11 @@ function the_russian_date( $tdate = '' ) {
  */
 add_action('admin_bar_menu', 'customize_toolbar_link', 999);
 function customize_toolbar_link( $wp_admin_bar ) {
-    $id = 'Seo18';
+    if( ! current_user_can( 'edit_pages' ) ) {
+        $wp_admin_bar->remove_menu( 'wp-logo' );
+    }
 
+    $id = 'Seo18';
     $wp_admin_bar->add_node( array(
         'id' => $id,
         'title' => $id . '.ru',
