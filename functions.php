@@ -12,7 +12,7 @@
 define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
-require_once THEME . '/includes/customizer.php';
+require_once THEME . '/includes/admin.php';
 require_once THEME . '/includes/tpl.php';
 require_once THEME . '/includes/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
 require_once THEME . '/includes/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress

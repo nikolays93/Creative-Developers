@@ -3,6 +3,34 @@
 if ( ! defined( 'ABSPATH' ) )
     exit; // Exit if accessed directly
 
+if( ! defined('TPL_RESPONSIVE') ) {
+    define('TPL_RESPONSIVE', false);
+}
+
+define('TPL_VIEWPORT', 1170);
+define('TPL_PADDINGS', 15);
+
+add_action('wp_head', 'template_viewport_html');
+function template_viewport_html() {
+    if( TPL_RESPONSIVE ) {
+        echo '
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">';
+    }
+    else {
+        $max_width = TPL_VIEWPORT - ( TPL_PADDINGS * 2 );
+
+        echo '
+        <meta name="viewport" content="width='.TPL_VIEWPORT.'">
+        <style type="text/css">
+            .container {
+                max-width: '.$max_width.'px !important;
+                width: '.$max_width.'px !important;
+            }
+        </style>';
+    }
+}
+
 /**
  * Мякиш от yoast SEO ( установить/активировать плагин, дополнительно => breadcrumbs )
  *
@@ -403,39 +431,6 @@ function the_russian_date( $tdate = '' ) {
         "rd" => ""
         );
     return strtr($tdate, $treplace);
-}
-
-/**
- * Добавить ссылку о разработчике в топбар
- */
-add_action('admin_bar_menu', 'customize_toolbar_link', 999);
-function customize_toolbar_link( $wp_admin_bar ) {
-    if( ! current_user_can( 'edit_pages' ) ) {
-        $wp_admin_bar->remove_menu( 'wp-logo' );
-    }
-
-    $id = 'Seo18';
-    $wp_admin_bar->add_node( array(
-        'id' => $id,
-        'title' => $id . '.ru',
-        'href' => 'http://' . $id . '.ru',
-        'meta' => array(
-            'title' => 'Перейти на сайт разработчика',
-            ),
-        ) );
-}
-
-/**
- * Сменить строку "Спасибо за творчество с Wordpress"
- */
-add_filter('admin_footer_text', 'custom_admin_footer');
-function custom_admin_footer() {
-    $wp_ver_str = get_bloginfo('version') . '-'. get_bloginfo('charset');
-
-    echo '<span id="footer-thankyou">Разработано компанией
-    <a href="http://seo18.ru" target="_blank">seo18.ru - создание и продвижение сайтов</a>
-    </span>.
-    <small> Использована система <a href="wordpress.com">WordPress (' . $wp_ver_str . ')</a>. </small>';
 }
 
 /**
