@@ -1,12 +1,6 @@
 <?php
 	get_header();
-
-	$type = $affix = get_post_type();
-
-	if($type == 'post')
-		$affix = get_post_format();
 ?>
-
 <div class="container">
 	<?php
 		if ( !is_front_page() )
@@ -18,10 +12,20 @@
 			<?php
 				if ( have_posts() ){
 					if( is_search() ){
+						echo sprintf('<header class="archive-header"><h1>%s %s</h1></header>',
+							'Результаты поиска:',
+							get_search_query()
+							);
+
 						get_tpl_search_content();
 					}
 					else {
-						get_tpl_content( $affix );
+						if( ! is_front_page() && is_archive() ){
+							the_archive_title('<h1 class="taxanomy-title">', '</h1>');
+							the_archive_description( '<div class="taxonomy-description">', '</div>' );
+						}
+
+						get_tpl_content();
 					}
 
 					the_template_pagination();
@@ -30,7 +34,7 @@
 					if( ! is_front_page() )
 						get_template_part( 'template-parts/content', 'none' );
 				}
-			?>	
+			?>
 			</main><!-- #main -->
 
 		<?php get_sidebar(); ?>

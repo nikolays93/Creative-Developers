@@ -157,17 +157,18 @@ function the_thumbnail( $post_id = false, $add_link = false ) {
  * @param  boolean $return print or return
  * @return html
  */
-function get_tpl_content( $affix, $return = false, $container = 'row' ) {
+function get_tpl_content( $affix = false, $return = false, $container = 'row' ) {
     $templates = array();
-    $affix = (string) $affix;
     $slug = 'template-parts/content';
 
-    if( $return ) ob_start();
+    if( ! $affix ) {
+        $type = $affix = get_post_type();
 
-    if( ! is_front_page() && is_archive() && !is_search() ){
-        the_archive_title('<h1 class="taxanomy-title">', '</h1>');
-        the_archive_description( '<div class="taxonomy-description">', '</div>' );
+        if($type == 'post')
+            $affix = get_post_format();
     }
+
+    if( $return ) ob_start();
 
     if( $container ) {
         echo sprintf('<div class="%s">', esc_attr( $container ));
@@ -203,12 +204,6 @@ function get_tpl_content( $affix, $return = false, $container = 'row' ) {
 
 function get_tpl_search_content( $return = false ) {
     ob_start();
-
-    ?>
-    <header class="archive-header">
-        <h1>Результаты поиска: <?php get_search_query(); ?></h1>
-    </header>
-    <?php
 
     while ( have_posts() ) {
         the_post();
