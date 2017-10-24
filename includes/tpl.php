@@ -185,7 +185,7 @@ function the_thumbnail( $post_id = false, $add_link = false ) {
  * @param  boolean $return print or return
  * @return html
  */
-function get_tpl_content( $affix = false, $return = false, $container = 'row' ) {
+function get_tpl_content( $affix = false, $return = false, $container = 'row', $query = null ) {
     $templates = array();
     $slug = 'template-parts/content';
 
@@ -196,14 +196,18 @@ function get_tpl_content( $affix = false, $return = false, $container = 'row' ) 
             $affix = get_post_format();
     }
 
+    if( $query && ! $query instanceof WP_Query ) {
+      return false;
+    }
+
     if( $return ) ob_start();
 
     if( $container ) {
         echo sprintf('<div class="%s">', esc_attr( $container ));
     }
 
-    while ( have_posts() ){
-        the_post();
+    while ( $query ? $query->have_posts() : have_posts() ){
+        $query ? $query->the_post() : the_post();
 
         // need for search
         if( $affix === false ) {
@@ -226,6 +230,8 @@ function get_tpl_content( $affix = false, $return = false, $container = 'row' ) 
     }
 
     if( $container ) echo '</div>';
+
+    wp_reset_postdata();
 
     if( $return ) return ob_get_clean();
 }
