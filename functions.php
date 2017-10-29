@@ -12,6 +12,10 @@
 define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
+if( ! class_exists('scssc') ) {
+  include THEME . '/includes/scss.inc.php';
+}
+
 require_once THEME . '/includes/admin.php';
 require_once THEME . '/includes/tpl.php';
 require_once THEME . '/includes/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
@@ -58,7 +62,33 @@ function archive_widgets_init(){
 add_action( 'widgets_init', 'archive_widgets_init' );
 
 function _theme_styles_and_scripts() {
-  wp_enqueue_style( 'style', get_stylesheet_directory_uri(), array(), '1.0', 'all' );
+  $is_compressed = ! defined('SCRIPT_DEBUG') || SCRIPT_DEBUG === false;
+  $minify = $is_compressed ? '.min' : '';
+
+  $option_name = 'stylesheet_cache';
+  if( current_user_can( 'administrator' ) ) {
+    $filemtime = get_option( $option_name );
+    $filename = THEME . '/style.scss';
+    if( ( $scss_time = filemtime($filename) ) != $filemtime ) {
+      $scss = new scssc();
+
+      if ( $is_compressed ) {
+        $scss->setFormatter( 'scss_formatter_compressed' );
+      }
+
+      $scss->addImportPath( THEME );
+
+      $cyrilic = "/[\x{0410}-\x{042F}]+.*[\x{0410}-\x{042F}]+/iu";
+      $excluded_cyr = preg_replace( $cyrilic, "", file_get_contents($filename) );
+
+      file_put_contents( str_replace('.scss', '.css', $filename), $scss->compile( $excluded_cyr ) );
+      $scss_time = filemtime($filename);
+      update_option( $option_name, $scss_time );
+    }
+  }
+
+  wp_enqueue_style( 'style', TPL . '/style.css', array(), $scss_time, 'all' );
+  wp_enqueue_style( 'bootload', TPL . '/assets/scss/bootload/source/bootload'.$minify.'.css', array(), '1.0' );
 
   // wp_deregister_script( 'jquery' );
   // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
