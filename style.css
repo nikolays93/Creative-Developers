@@ -9,6 +9,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: cdevelops-theme
 Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
 */
+@import "assets/scss/bootload/includes/_mixins.scss";
+@import "assets/scss/bootload/includes/_variables.scss";
 .navbar-default {
   width: 100%;
   background-color: #ccc;
@@ -32,9 +34,7 @@ Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
 
 .content {
   min-height: 450px; }
-  .content .media-body {
-    max-width: 100%; }
-  .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+  .content h1, .content h2, .content h3 {
     margin-top: 20px;
     margin-bottom: 20px; }
 

@@ -141,6 +141,7 @@ function theme_archive_title_filter( $title ) {
  * @param int  $post_id   ИД записи превью которой добавляем ссылку
  */
 function add_thumbnail_link( $thumbnail, $post_id ) {
+    if( ! $thumbnail ) return '';
     $link = get_permalink( absint($post_id) );
     $thumbnail_html = sprintf('<a class="media-left" href="%s">%s</a>',
         esc_url( $link ),
@@ -170,7 +171,7 @@ function the_thumbnail( $post_id = false, $add_link = false ) {
     }
 
     if( $add_link ) {
-        $thumbnail_html = add_thumbnail_link( $thumbnail_html, $post_id );
+        $thumbnail = add_thumbnail_link( $thumbnail, $post_id );
     }
 
     $thumbnail_html = apply_filters( 'content_image_html', $thumbnail, $post_id, $add_link );

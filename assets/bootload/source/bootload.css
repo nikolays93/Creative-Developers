@@ -1861,6 +1861,9 @@ fieldset[disabled] a.btn {
   }
 }
 .media {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
   margin-top: 15px;
 }
 .media:first-child {
@@ -1871,24 +1874,16 @@ fieldset[disabled] a.btn {
   overflow: hidden;
   zoom: 1;
 }
-.media .media-body {
-  width: 10000px;
-}
-
-.media-object {
-  display: block;
-}
-.media-object.img-thumbnail {
-  max-width: none;
-}
 
 .media-right,
-.media > .pull-right {
+.media > .pull-right,
+.media > .ar {
   padding-left: 10px;
 }
 
 .media-left,
-.media > .pull-left {
+.media > .pull-left
+.media > .al {
   padding-right: 10px;
 }
 
