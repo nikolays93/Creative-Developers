@@ -90,12 +90,12 @@ function _theme_styles_and_scripts() {
     update_theme_styles($filemtime, $option_name, $is_compressed);
 
     wp_enqueue_style( 'style', TPL . '/style.css', array(), $filemtime, 'all' );
-    wp_enqueue_style( 'bootload', TPL . '/assets/scss/bootload/source/bootload'.$minify.'.css', array(), '1.0' );
+    wp_enqueue_style( 'bootload', TPL . '/assets/bootload/source/bootload'.$minify.'.css', array(), '1.0' );
 
     // wp_deregister_script( 'jquery' );
     // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
     wp_enqueue_script('jquery');
-    wp_enqueue_script('script', TPL . '/assets/script.js', array('jquery'), '1.0', true);
+    // wp_enqueue_script('script', TPL . '/assets/script.js', array('jquery'), '1.0', true);
 }
 add_action( 'wp_enqueue_scripts', '_theme_styles_and_scripts', 999 );
 
