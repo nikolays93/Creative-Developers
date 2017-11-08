@@ -52,7 +52,29 @@ ol ol, ul ul, ol ul, ul ol {
     margin-bottom: 0;
 }
 
-.two-columns { columns: 2; }
+.two-columns {
+    position: relative;
+    overflow: hidden;
+    > div, li {
+        float: left;
+        width: 50%;
+        &:nth-child(2n+1) {
+            clear: both;
+        }
+    }
+}
+
+.two-columns-vertical {
+    -webkit-column-count: 2;
+       -moz-column-count: 2;
+            column-count: 2;
+    > div, li {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+    }
+}
+
 .clear-list { @include clear-list('40px'); }
 .list-inline {
     @include clear-list(0);
