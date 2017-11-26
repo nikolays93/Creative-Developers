@@ -21,6 +21,7 @@ require_once THEME . '/includes/tpl.php';
 require_once THEME . '/includes/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
 require_once THEME . '/includes/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
 require_once THEME . '/includes/tpl-navigation.php'; // * Шаблон навигации
+require_once THEME . '/includes/scss-update.php';    // * Обновление scss
 
 if( class_exists('woocommerce') ) {
   require_once THEME . '/includes/woocommerce.php';
@@ -60,26 +61,6 @@ function archive_widgets_init(){
     ) );
 }
 add_action( 'widgets_init', 'archive_widgets_init' );
-
-function update_theme_styles( &$filemtime, $option_name, $is_compressed ) {
-    $filename = THEME . '/style.scss';
-    if( current_user_can( 'administrator' ) &&  filemtime($filename) != $filemtime ) {
-        $scss = new scssc();
-
-        if ( $is_compressed ) {
-            $scss->setFormatter( 'scss_formatter_compressed' );
-        }
-
-        $scss->addImportPath( THEME );
-
-        $cyrilic = "/[\x{0410}-\x{042F}]+.*[\x{0410}-\x{042F}]+/iu";
-        $excluded_cyr = preg_replace( $cyrilic, "", file_get_contents($filename) );
-
-        file_put_contents( str_replace('.scss', '.css', $filename), $scss->compile( $excluded_cyr ) );
-        $filemtime = filemtime($filename);
-        update_option( $option_name, $filemtime );
-    }
-}
 
 function _theme_styles_and_scripts() {
     $is_compressed = ! defined('SCRIPT_DEBUG') || SCRIPT_DEBUG === false;
