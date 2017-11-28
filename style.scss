@@ -3,7 +3,7 @@ Theme Name: Creative Developers Theme
 Author: NikolayS93
 Author URI: //vk.com/nikolays_93
 Description: Starter page for creative developers.
-Version: 1.1
+Version: 2.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: cdevelops-theme
@@ -13,103 +13,96 @@ Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
 // * Header
 // * Navigations
 // * Sides
+// * Front page
 // * Posts and pages
 // * Footer
 // * Woocommerce
 // * Content
 
-@import "assets/scss/bootload/includes/_mixins.scss";
-@import "assets/scss/bootload/includes/_variables.scss";
+// custom variables
+@import "assets/bootload-4/scss/_variables.scss";
 
-//
-// Header
-//
+// bootload variables
+@import "assets/bootload-4/scss/includes/_variables.scss";
 
-//
-// Navigations
-//
-.navbar-default {
-  width: 100%; // /* sticky fix */
-  background-color: #ccc;
-  margin-bottom: 20px;
-  .navbar {
-    padding: 0;
-    border-radius: 0;
-  }
-  .navbar-nav {
-    .nav-link {
-      padding: 10px 15px;
-      &, &:hover, &:focus {
-        color: #000;
-        text-decoration: none;
-      }
+// /******************************** Header ***********************************/
+
+// /***************************** Navigations *********************************/
+    .navbar-default {
+        width: 100%; // /* sticky fix */
+        background-color: #ccc;
+        margin-bottom: 20px;
+        .navbar {
+            padding: 0;
+            border-radius: 0;
+        }
+        .navbar-nav {
+            .nav-link {
+                padding: 10px 15px;
+                &, &:hover, &:focus {
+                    color: #000;
+                    text-decoration: none;
+                }
+            }
+            .current-menu-ancestor > .nav-link,
+            .active > .nav-link,
+            .nav-link.active {
+
+            }
+        }
+        &.non-responsive {
+            .navbar-nav {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -webkit-flex-direction: row;
+                -ms-flex-direction: row;
+                flex-direction: row;
+            }
+            .navbar-brand {
+                display: none !important;
+            }
+        }
     }
-    .current-menu-ancestor > .nav-link,
-    .active > .nav-link,
-    .nav-link.active {
 
+// /******************************** Sides ************************************/
+
+// /***************************** Front page **********************************/
+
+// /*************************** Posts and pages *******************************/
+
+// /***************************** Woocommerce *********************************/
+    .post-type-archive-product .row.products {
+        margin: 0 -15px 1em;
+        .product {
+            margin-bottom: 20px;
+            h2 {
+                color: #444;
+            }
+        }
     }
-  }
-  &.non-responsive {
-    .navbar-nav {
-      -webkit-box-orient: horizontal;
-      -webkit-box-direction: normal;
-      -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-      flex-direction: row;
+
+    .single-product #content div.product {
+        div.images {
+            float: left;
+            width: 48%;
+        }
+        div.summary {
+            float: right;
+            width: 48%;
+            + .woocommerce-tabs {
+                clear: both;
+            }
+        }
     }
-    .navbar-brand {
-      display: none !important;
+
+// /******************************** Footer ***********************************/
+
+// /******************************** Content **********************************/
+    .content {
+        min-height: 450px;
+        .media-body { max-width: 100%; }
+        h1,h2,h3,h4,h5,h6 {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
     }
-  }
-}
-
-//
-// Sides
-//
-
-//
-// Posts and pages
-//
-.content {
-  min-height: 450px;
-  h1,h2,h3 {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-}
-
-//
-// Woocommerce
-//
-.post-type-archive-product .row.products {
-  margin: 0 -15px 1em;
-  .product {
-    margin-bottom: 20px;
-    h2 {
-      color: #444;
-    }
-  }
-}
-
-.single-product #content div.product {
-  div.images {
-    float: left;
-    width: 48%;
-  }
-  div.summary {
-    float: right;
-    width: 48%;
-    + .woocommerce-tabs {
-      clear: both;
-    }
-  }
-}
-
-//
-// Footer
-//
-
-//
-// Content
-//
