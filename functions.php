@@ -12,6 +12,8 @@
 define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
+define('AUTO_COMPILE', true);
+
 if( ! class_exists('scssc') ) {
   include THEME . '/includes/scss.inc.php';
 }
@@ -70,8 +72,8 @@ function _theme_styles_and_scripts() {
     $filemtime = get_option( $option_name );
     update_theme_styles($filemtime, $option_name, $is_compressed);
 
+    wp_enqueue_style( 'bootload', TPL . '/assets/bootload-4/bootload'.$minify.'.css', array(), '4.0' );
     wp_enqueue_style( 'style', TPL . '/style.css', array(), $filemtime, 'all' );
-    wp_enqueue_style( 'bootload', TPL . '/assets/bootload/source/bootload'.$minify.'.css', array(), '1.0' );
 
     // wp_deregister_script( 'jquery' );
     // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
