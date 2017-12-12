@@ -9,3 +9,47 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: cdevelops-theme
 Tags: Start, Start-Theme, Developers-Theme, Creative-Developers, Bootstrap, Scss
 */
+.navbar-default {
+  width: 100%;
+  background-color: #ccc;
+  margin-bottom: 20px; }
+  .navbar-default .navbar {
+    padding: 0;
+    border-radius: 0; }
+  .navbar-default .navbar-nav .nav-link {
+    padding: 10px 15px; }
+    .navbar-default .navbar-nav .nav-link, .navbar-default .navbar-nav .nav-link:hover, .navbar-default .navbar-nav .nav-link:focus {
+      color: #000;
+      text-decoration: none; }
+    .navbar-default.non-responsive .navbar-nav {
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row; }
+    .navbar-default.non-responsive .navbar-brand {
+      display: none !important; }
+
+.post-type-archive-product .row.products {
+  margin: 0 -15px 1em; }
+  .post-type-archive-product .row.products .product {
+    margin-bottom: 20px; }
+    .post-type-archive-product .row.products .product h2 {
+      color: #444; }
+
+.single-product #content div.product div.images {
+  float: left;
+  width: 48%; }
+  .single-product #content div.product div.summary {
+    float: right;
+    width: 48%; }
+    .single-product #content div.product div.summary + .woocommerce-tabs {
+      clear: both; }
+
+.content {
+  min-height: 450px; }
+  .content .media-body {
+    max-width: 100%; }
+  .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    margin-top: 20px;
+    margin-bottom: 20px; }
