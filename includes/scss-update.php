@@ -20,8 +20,10 @@ function update_theme_styles( &$filemtime, $option_name, $is_compressed ) {
             update_option( $option_name, $filemtime );
         }
 
-        wp_redirect( remove_query_arg( 'scss_upd', home_url($_SERVER['REQUEST_URI']) ) );
-        die;
+        if( ! empty( $_GET['scss_upd'] ) ) {
+            wp_redirect( remove_query_arg( 'scss_upd', home_url($_SERVER['REQUEST_URI']) ) );
+            die;
+        }
     }
 }
 
