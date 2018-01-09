@@ -12,7 +12,7 @@
 define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
-define('AUTO_COMPILE', true);
+define('AUTO_COMPILE', false);
 
 if( ! class_exists('scssc') ) {
   include THEME . '/includes/scss.inc.php';
@@ -69,8 +69,8 @@ function _theme_styles_and_scripts() {
     $minify = $is_compressed ? '.min' : '';
 
     $option_name = 'stylesheet_cache';
-    $filemtime = get_option( $option_name );
-    update_theme_styles($filemtime, $option_name, $is_compressed);
+    $_filemtime = get_option( $option_name );
+    $filemtime = update_theme_styles($_filemtime, $option_name, $is_compressed);
 
     wp_enqueue_style( 'bootload', TPL . '/assets/bootload-4/bootload'.$minify.'.css', array(), '4.0' );
     wp_enqueue_style( 'style', TPL . '/style.css', array(), $filemtime, 'all' );

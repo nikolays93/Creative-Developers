@@ -1,6 +1,6 @@
 <?php
 
-function update_theme_styles( &$filemtime, $option_name, $is_compressed ) {
+function update_theme_styles( $filemtime, $option_name, $is_compressed ) {
     if( (defined('AUTO_COMPILE') && AUTO_COMPILE) || ! empty( $_GET['scss_upd'] ) ) {
         $filename = THEME . '/style.scss';
         if( current_user_can( 'administrator' ) &&  filemtime($filename) != $filemtime ) {
@@ -20,10 +20,13 @@ function update_theme_styles( &$filemtime, $option_name, $is_compressed ) {
             update_option( $option_name, $filemtime );
         }
 
-        if( ! empty( $_GET['scss_upd'] ) ) {
-            wp_redirect( remove_query_arg( 'scss_upd', home_url($_SERVER['REQUEST_URI']) ) );
-            die;
-        }
+        // if( ! empty( $_GET['scss_upd'] ) ) {
+        //     Редирект не сработает, потому что функция сработает в head (что означает что html уже выведен)
+        //     wp_redirect( remove_query_arg( 'scss_upd', home_url($_SERVER['REQUEST_URI']) ) );
+        //     wp_die('Стили обновлены');
+        // }
+
+        return $filename;
     }
 }
 
@@ -35,7 +38,7 @@ if( ! defined('AUTO_COMPILE') || ! AUTO_COMPILE ) {
             'title' => __('Обновить стили'),
             'href'  => add_query_arg( 'scss_upd', 1 ),
             'meta'  => array(
-                'title' => 'Перейти на сайт разработчика',
+                'title' => 'Скомпилировать css стили из scss',
                 ),
             ) );
     }
