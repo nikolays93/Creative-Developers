@@ -9,10 +9,12 @@
 /**
  * Include required files
  */
+define('TPL_RESPONSIVE', true);
+
 define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
-define('AUTO_COMPILE', false);
+define('AUTO_COMPILE', true);
 
 if( ! class_exists('scssc') ) {
   include THEME . '/includes/scss.inc.php';

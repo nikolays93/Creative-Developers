@@ -4,8 +4,8 @@ function default_theme_nav(
   $container = array( '<nav class="navbar navbar-default non-responsive">', '</nav>' ),
   $toggler = '' ){
 
-  if( get_theme_mod( 'responsive' ) ){
-    $container = array( '<section class="navbar-default"><nav class="container navbar navbar-toggleable-md">', '</nav></section>' );
+  if( TPL_RESPONSIVE ){
+    $container = array( '<section class="navbar-default"><nav class="navbar navbar-expand-lg navbar-light bg-light"><div class="container">', '</div></nav></section>' );
     $args['container_class'] = 'collapse navbar-collapse navbar-responsive-collapse';
     $args['container_id'] = 'default-collapse';
     $toggler = '

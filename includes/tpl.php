@@ -3,10 +3,6 @@
 if ( ! defined( 'ABSPATH' ) )
     exit; // Exit if accessed directly
 
-if( ! defined('TPL_RESPONSIVE') ) {
-    define('TPL_RESPONSIVE', false);
-}
-
 define('TPL_VIEWPORT', 1170);
 define('TPL_PADDINGS', 15);
 
