@@ -14,18 +14,11 @@ define('TPL_RESPONSIVE', true);
 define('THEME', get_template_directory());
 define('TPL', get_template_directory_uri());
 
-define('AUTO_COMPILE', true);
-
-if( ! class_exists('scssc') ) {
-  include THEME . '/includes/scss.inc.php';
-}
-
 require_once THEME . '/includes/admin.php';
 require_once THEME . '/includes/tpl.php';
 require_once THEME . '/includes/tpl-bootstrap.php';  // * Вспомагателные bootstrap функции
 require_once THEME . '/includes/tpl-gallery.php';    // * Шаблон встроенной галереи wordpress
 require_once THEME . '/includes/tpl-navigation.php'; // * Шаблон навигации
-require_once THEME . '/includes/scss-update.php';    // * Обновление scss
 
 if( class_exists('woocommerce') ) {
   require_once THEME . '/includes/woocommerce.php';
@@ -70,12 +63,11 @@ function _theme_styles_and_scripts() {
     $is_compressed = ! defined('SCRIPT_DEBUG') || SCRIPT_DEBUG === false;
     $minify = $is_compressed ? '.min' : '';
 
-    $option_name = 'stylesheet_cache';
-    $_filemtime = get_option( $option_name );
-    $filemtime = update_theme_styles($_filemtime, $option_name, $is_compressed);
-
     wp_enqueue_style( 'bootload', TPL . '/assets/bootload-4/bootload'.$minify.'.css', array(), '4.0' );
-    wp_enqueue_style( 'style', TPL . '/style.css', array(), $filemtime, 'all' );
+
+    wp_enqueue_style( 'style', get_stylesheet_uri(), array(), class_exists('CDevelopers\SCSS\Utils') ?
+      CDevelopers\SCSS\Utils::get('stylemtime') :
+      filemtime( get_template_directory() . '/style.css' ) );
 
     // wp_deregister_script( 'jquery' );
     // wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
