@@ -1,5 +1,18 @@
 <?php
-	get_header();
+/**
+ * Основной файл шаблона Wordpress
+ *
+ * Это самый первичный файл в теме WordPress
+ * И один из двух необходимых (еще необходим style.css).
+ * Он используется если ничего более конкретного не соответствует запросу.
+ * к пр. этот файл покажется на главной странице, если нет home.php.
+ *
+ * @see https://developer.wordpress.org/themes/basics/template-hierarchy/
+ * @package seo18
+ * @version 1.0
+ */
+
+get_header();
 ?>
 <div class="container">
 	<?php

@@ -1,4 +1,15 @@
-<!DOCTYPE html>
+<?php
+/**
+ * Шаблон шапки для сайта
+ *
+ * Этот шаблон отображает начало сайта до контента включая тэг <head>
+ *
+ * @see https://developer.wordpress.org/themes/basics/template-files/#template-partials
+ * @package seo18
+ * @version 1.0
+ */
+
+?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
